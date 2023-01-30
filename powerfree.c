@@ -3,7 +3,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-// if n%p == 0
+// if n%p == 0, 
 
 // assume finite length
 // n is length of factor, p is length of period
