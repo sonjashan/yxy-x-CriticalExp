@@ -3,18 +3,18 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-// to do np+ powerfree
 // if n%p == 0
 
 // assume finite length
 // n is length of factor, p is length of period
-int npPowerfree(int str[], int sLen, int n, int p){
+// testing n/p+ power is essentially testing for n+1/p
+int npPowerfree(int str[], int sLen, int n, int p, int plus){
     // for each letter in str
-    for(int i=0; i <= sLen - n; i++){
+    for(int i=0; i <= sLen - (n + plus); i++){
         int halt = 0;
         // for each letter in period
         for(int j=0; j < p; j++){
-            for(int step = p; j + step < n; step += p){
+            for(int step = p; j + step < (n + plus); step += p){
                 if(str[i + j] != str[i + j + step]){
                     halt = 1;
                     break;
@@ -32,8 +32,9 @@ int main(){
     int s[] = {2, 1, 2, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3};
     int sLen = 16;
     int n = 13; 
-    int p = 6;
-    printf("is the string %d/%d-powerfree? %d\n", n, p, npPowerfree(s, sLen, n, p));
+    int p = 5;
+    printf("is the string %d/%d-powerfree? %d\n", n, p, npPowerfree(s, sLen, n, p, 0));
+    printf("is the string %d/%d+-powerfree? %d\n", n, p, npPowerfree(s, sLen, n, p, 1));
 }
 
 
