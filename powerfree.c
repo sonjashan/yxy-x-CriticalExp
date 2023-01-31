@@ -53,6 +53,41 @@ void printIntArray(int arr[], int arrSize){
     printf("\n");
 }
 
+// str is binary
+// minimum |y| and |x|
+int avoid_yxyprimex(int str[], int sLen, int yLen, int xLen){
+    for(int i = 0; i < sLen; i++){
+        int halt = 0;
+        // test the y and y' in y x y' x
+        for(int yi = 0; yi < yLen; yi++){
+            if(str[i + yi] == str[i + yLen + xLen + yi]) {halt = 1; break;}
+        } 
+        // test the x and x in y x y' x
+        if(!halt){
+            for(int xi = 0; xi < xLen; xi++){
+                if(str[i + yLen + xi] != str[i + yLen + xLen + yLen + xi]) {halt = 1; break;}
+            }
+        }
+        if(!halt){
+            return 0;
+        }
+    }
+    return 1;
+}
+
+// // h1start
+// void backtrack_search(int pre[], int xLen, int yLen, int n, int p, int plus){
+//     int morphism[100];
+//     int i = 0; 
+//     while(i < 100){
+//         morphism[i] = 0;
+//         if((i + 1) % 2 == 0){
+//             int h1start = (i + 1) / 2;
+
+//         }
+//     }
+// }
+
 
 int main(){
     int pre[] = {0, 1, 1, 0};
