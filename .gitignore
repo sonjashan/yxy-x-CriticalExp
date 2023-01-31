@@ -1,1 +1,4 @@
 powerfree
+.vscode/tasks.json
+.gitignore
+powerfree.dSYM/Contents/Info.plist
