@@ -37,14 +37,14 @@ int n_p_power_free(int str[], int sLen, int n, int p, int plus){
     return 1;
 }
 
-// assume h0 and h1 are the same length
-void apply_bin_morph(int pre[], int preLen, int h0[], int h1[], int h0Len, int res[preLen * h0Len]){
-    for(int i = 0; i < preLen; i++){
-        for(int j = 0; j < h0Len; j++){
-            res[i * h0Len + j] = (pre[i] == 0)? h0[j] : h1[j];
-        }
-    }
-}
+// // assume h0 and h1 are the same length
+// void apply_bin_morph(int pre[], int preLen, int h0[], int h1[], int h0Len, int res[preLen * h0Len]){
+//     for(int i = 0; i < preLen; i++){
+//         for(int j = 0; j < h0Len; j++){
+//             res[i * h0Len + j] = (pre[i] == 0)? h0[j] : h1[j];
+//         }
+//     }
+// }
 
 void printIntArray(int arr[], int arrSize){
     for(int i = 0; i < arrSize; i++){
@@ -109,21 +109,21 @@ int avoid_yxyprimex(int str[], int sLen, int yLen, int xLen){
 // TODO change the morphism application for 3 letter preseq 
 // and write the vtm sequence
 
+// int tm[300] = {0, 1};
+
 int main(){
-    int preLen = 300;
-    int tm[300] = {0, 1};
-    for(int x = 2; x < preLen; x++) tm[x] = x&1 ? !tm[x-1] : tm[x/2];
-    printIntArray(tm, preLen);
 
 
-    
+
+    // // build TM
+    // for(int x = 2; x < 300; x++) tm[x] = x&1 ? !tm[x-1] : tm[x/2];
+    // // printIntArray(tm, 300);
+
     // int s[] = {0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1};
     // int sLen = 14;
     // printf("does the string avoid yxy'x? %d\n", fixed_len_avoid_yxyprimex(s, sLen, 3, 3));
     // printf("does the string avoid yxy'x? %d\n", avoid_yxyprimex(s, sLen, 2, 2));
     // avoid_yxyprimex(s, sLen, 2, 2);
-
-
 
     // int pre[] = {0, 1, 1, 0};
     // int preLen = 4; 
@@ -133,10 +133,6 @@ int main(){
     // int morphed[preLen * h0Len];
     // apply_bin_morph(pre, preLen, h0, h1, h0Len, morphed);
     // printIntArray(morphed, preLen * h0Len);
-
-
-
-
 
     // int s[] = {2, 1, 2, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3};
     // // int s[] = {1, 2, 3, 4, 1, 2, 3, 4, 1, 2};
