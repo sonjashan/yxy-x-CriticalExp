@@ -53,9 +53,7 @@ void printIntArray(int arr[], int arrSize){
     printf("\n");
 }
 
-// str is binary
-// minimum |y| and |x|
-int avoid_yxyprimex(int str[], int sLen, int yLen, int xLen){
+int fixed_len_avoid_yxyprimex(int str[], int sLen, int yLen, int xLen){
     for(int i = 0; i < sLen; i++){
         int halt = 0;
         // test the y and y' in y x y' x
@@ -71,6 +69,16 @@ int avoid_yxyprimex(int str[], int sLen, int yLen, int xLen){
         if(!halt){
             return 0;
         }
+    }
+    return 1;
+}
+
+// str is binary
+// minimum |y| and |x|
+int avoid_yxyprimex(int str[], int sLen, int yLen, int xLen){
+    for(int i = yLen; (yLen + xLen) * 2 <= sLen; yLen++){
+        for(int j = xLen; (yLen + xLen) * 2 <= sLen; yLen++){
+            if(!fixed_len_avoid_yxyprimex(str, sLen, i, j)) return 0;
     }
     return 1;
 }
