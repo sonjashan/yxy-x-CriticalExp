@@ -78,34 +78,30 @@ int fixed_len_avoid_yxyprimex(int str[], int sLen, int yLen, int xLen){
 int avoid_yxyprimex(int str[], int sLen, int yLen, int xLen){
     for(int i = yLen; (i + xLen) * 2 <= sLen; i++){
         for(int j = xLen; (i + j) * 2 <= sLen; j++){
+            // printf("i = %d\n", i);
+            // printf("j = %d\n", j);
+            // printf("--------------\n");
             if(!fixed_len_avoid_yxyprimex(str, sLen, i, j)) return 0;
         }
     }
     return 1;
 }
 
-// // h1start
-// void backtrack_search(int pre[], int xLen, int yLen, int n, int p, int plus){
-//     int morphism[100];
-//     int i = 0; 
-//     while(i < 100){
-//         morphism[i] = 0;
-//         if((i + 1) % 2 == 0){
-//             int h1start = (i + 1) / 2;
-//         }
-//     }
-// }
-
-
 int main(){
-    int pre[] = {0, 1, 1, 0};
-    int preLen = 4; 
-    int h0[] = {3, 4};
-    int h1[] = {2, 6};
-    int h0Len = 2;
-    int morphed[preLen * h0Len];
-    apply_bin_morph(pre, preLen, h0, h1, h0Len, morphed);
-    printIntArray(morphed, preLen * h0Len);
+    int s[] = {2, 1, 2, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3};
+    int sLen = 16;
+    avoid_yxyprimex(s, sLen, 2, 2);
+
+
+
+    // int pre[] = {0, 1, 1, 0};
+    // int preLen = 4; 
+    // int h0[] = {3, 4};
+    // int h1[] = {2, 6};
+    // int h0Len = 2;
+    // int morphed[preLen * h0Len];
+    // apply_bin_morph(pre, preLen, h0, h1, h0Len, morphed);
+    // printIntArray(morphed, preLen * h0Len);
 
 
 
@@ -120,3 +116,14 @@ int main(){
     // printf("is the string %d/%d+-powerfree? %d\n", n, p, n_p_power_free(s, sLen, n, p, 1));
 }
 
+// // h1start
+// void backtrack_search(int pre[], int xLen, int yLen, int n, int p, int plus){
+//     int morphism[100];
+//     int i = 0; 
+//     while(i < 100){
+//         morphism[i] = 0;
+//         if((i + 1) % 2 == 0){
+//             int h1start = (i + 1) / 2;
+//         }
+//     }
+// }
