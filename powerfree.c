@@ -88,11 +88,39 @@ int avoid_yxyprimex(int str[], int sLen, int yLen, int xLen){
     return 1;
 }
 
+// // xLen and yLen are the min length
+// // mLen is the max length of morphisms we are looking for
+// void backtrack_search(int pre[], int xLen, int yLen, int n, int p, int plus, int mLen){
+//     int morphism[mLen];
+//     int i = 0; 
+//     while(i < mLen){
+//         morphism[i] = 0;
+//         if((i + 1) % 2 == 0){
+//             int h1start = (i + 1) / 2;
+//             if(avoid_yxyprimex(morphism, h1start, xLen, yLen) && 
+//             avoid_yxyprimex(morphism + h1start, h1start, xLen, yLen)){
+//                 apply_bin_morph()
+//             }
+//         }
+//     }
+// }
+
+
+// TODO change the morphism application for 3 letter preseq 
+// and write the vtm sequence
+
 int main(){
-    int s[] = {0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1};
-    int sLen = 14;
+    int preLen = 300;
+    int tm[300] = {0, 1};
+    for(int x = 2; x < preLen; x++) tm[x] = x&1 ? !tm[x-1] : tm[x/2];
+    printIntArray(tm, preLen);
+
+
+    
+    // int s[] = {0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1};
+    // int sLen = 14;
     // printf("does the string avoid yxy'x? %d\n", fixed_len_avoid_yxyprimex(s, sLen, 3, 3));
-    printf("does the string avoid yxy'x? %d\n", avoid_yxyprimex(s, sLen, 2, 2));
+    // printf("does the string avoid yxy'x? %d\n", avoid_yxyprimex(s, sLen, 2, 2));
     // avoid_yxyprimex(s, sLen, 2, 2);
 
 
@@ -119,14 +147,3 @@ int main(){
     // printf("is the string %d/%d+-powerfree? %d\n", n, p, n_p_power_free(s, sLen, n, p, 1));
 }
 
-// // h1start
-// void backtrack_search(int pre[], int xLen, int yLen, int n, int p, int plus){
-//     int morphism[100];
-//     int i = 0; 
-//     while(i < 100){
-//         morphism[i] = 0;
-//         if((i + 1) % 2 == 0){
-//             int h1start = (i + 1) / 2;
-//         }
-//     }
-// }
