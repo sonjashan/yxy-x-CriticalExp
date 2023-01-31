@@ -37,20 +37,33 @@ int n_p_power_free(int str[], int sLen, int n, int p, int plus){
     return 1;
 }
 
-int * apply_bin_morph(int pre[], int preLen, int h0[], int h1[], int h0Len, int res[preLen*h0Len]){
-    int idxRes = 0;
+// assume h0 and h1 are the same length
+void apply_bin_morph(int pre[], int preLen, int h0[], int h1[], int h0Len, int res[preLen * h0Len]){
     for(int i = 0; i < preLen; i++){
         for(int j = 0; j < h0Len; j++){
-            res[idxRes] = (pre[i] == 0)? h0[j] : h1[j];
-            idxRes++;
+            res[i * h0Len + j] = (pre[i] == 0)? h0[j] : h1[j];
         }
     }
-    return idxRes;
+}
+
+void printIntArray(int arr[], int arrSize){
+    for(int i = 0; i < arrSize; i++){
+        printf("%d  ", arr[i]);
+    }
+    printf("\n");
 }
 
 
-
 int main(){
+    int pre[] = {0, 1, 1, 0};
+    int preLen = 4; 
+    int h0[] = {3, 4};
+    int h1[] = {2, 6};
+    int h0Len = 2;
+    int morphed[preLen * h0Len];
+    apply_bin_morph(pre, preLen, h0, h1, h0Len, morphed);
+    printIntArray(morphed, preLen * h0Len);
+
 
 
 
