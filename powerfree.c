@@ -67,7 +67,7 @@ int fixed_len_avoid_yxyprimex(int str[], int sLen, int yLen, int xLen){
             }
         }
         if(!halt){
-            printf("i = %d\n", i);
+            // printf("i = %d\n", i);
             return 0;
         }
     }
@@ -89,9 +89,10 @@ int avoid_yxyprimex(int str[], int sLen, int yLen, int xLen){
 }
 
 int main(){
-    int s[] = {0, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1};
+    int s[] = {0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1};
     int sLen = 14;
-    printf("does the string avoid yxy'x? %d\n", fixed_len_avoid_yxyprimex(s, sLen, 3, 3));
+    // printf("does the string avoid yxy'x? %d\n", fixed_len_avoid_yxyprimex(s, sLen, 3, 3));
+    printf("does the string avoid yxy'x? %d\n", avoid_yxyprimex(s, sLen, 2, 2));
     // avoid_yxyprimex(s, sLen, 2, 2);
 
 
