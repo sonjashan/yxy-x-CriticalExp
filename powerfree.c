@@ -54,7 +54,7 @@ void printIntArray(int arr[], int arrSize){
 }
 
 int fixed_len_avoid_yxyprimex(int str[], int sLen, int yLen, int xLen){
-    for(int i = 0; i < sLen; i++){
+    for(int i = 0; i <= sLen - (yLen + xLen) * 2; i++){
         int halt = 0;
         // test the y and y' in y x y' x
         for(int yi = 0; yi < yLen; yi++){
@@ -76,9 +76,10 @@ int fixed_len_avoid_yxyprimex(int str[], int sLen, int yLen, int xLen){
 // str is binary
 // minimum |y| and |x|
 int avoid_yxyprimex(int str[], int sLen, int yLen, int xLen){
-    for(int i = yLen; (yLen + xLen) * 2 <= sLen; yLen++){
-        for(int j = xLen; (yLen + xLen) * 2 <= sLen; yLen++){
+    for(int i = yLen; (i + xLen) * 2 <= sLen; i++){
+        for(int j = xLen; (i + j) * 2 <= sLen; j++){
             if(!fixed_len_avoid_yxyprimex(str, sLen, i, j)) return 0;
+        }
     }
     return 1;
 }
@@ -91,7 +92,6 @@ int avoid_yxyprimex(int str[], int sLen, int yLen, int xLen){
 //         morphism[i] = 0;
 //         if((i + 1) % 2 == 0){
 //             int h1start = (i + 1) / 2;
-
 //         }
 //     }
 // }
