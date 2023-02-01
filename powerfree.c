@@ -7,7 +7,7 @@
 // assume finite length
 // n is length of factor, p is length of period
 // testing n/p+ power is essentially testing for n+1/p
-int n_p_power_free(int str[], int sLen, int n, int p, int plus){
+int n_p_powerfree(int str[], int sLen, int n, int p, int plus){
     while(n <= sLen){
         // for each letter in str
         for(int i = 0; i <= sLen - (n + plus); i++){
@@ -129,7 +129,7 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
         int h012Len = i + 1;
         // 012 is a factor in vtm
         if(avoid_yxyprimex(morphism, h012Len, yLen, xLen) &&
-        n_p_power_free(morphism, h012Len, n, p, plus)){
+        n_p_powerfree(morphism, h012Len, n, p, plus)){
             backtrack = 0;
             extend = 1;
             if((h012Len) % 3 == 0){
@@ -144,7 +144,7 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
                 // but not necessary for h(210), no good example yet
                 // think about no prefix old2, new suffix, no prefix old1, old2 prefix, old0, old1 prefix
                 if(avoid_yxyprimex(postMorph, postMorphLen, yLen, xLen) &&
-                n_p_power_free(postMorph, postMorphLen, n, p, plus)){
+                n_p_powerfree(postMorph, postMorphLen, n, p, plus)){
 
                     printf("0->");
                     printIntArray(morphism, h1start, 0);
@@ -176,7 +176,7 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
     }
 }
 
-void vtmBuild(int vtm[], int vtmLen){
+void vtm_build(int vtm[], int vtmLen){
     vtm[0] = 2;
     int source = 0;
     int p = 0;
@@ -204,7 +204,7 @@ void vtmBuild(int vtm[], int vtmLen){
 int main(){
     static int vtmLen = 20;
     int vtm[vtmLen];
-    vtmBuild(vtm, vtmLen);
+    vtm_build(vtm, vtmLen);
 
     int yLen = 2;
     int xLen = 2;
@@ -257,7 +257,7 @@ int main(){
     // int sLen = 16;
     // int n = 2; 
     // int p = 1;
-    // printf("is the string %d/%d-powerfree? %d\n", n, p, n_p_power_free(s, sLen, n, p, 0));
-    // printf("is the string %d/%d+-powerfree? %d\n", n, p, n_p_power_free(s, sLen, n, p, 1));
+    // printf("is the string %d/%d-powerfree? %d\n", n, p, n_p_powerfree(s, sLen, n, p, 0));
+    // printf("is the string %d/%d+-powerfree? %d\n", n, p, n_p_powerfree(s, sLen, n, p, 1));
 }
 
