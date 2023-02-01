@@ -123,6 +123,7 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
     int i = 0; 
     morphism[i] = 0;
     while(i < mLen){
+        printIntArray(morphism, i + 1, 0);
         int extend = 0;
         int backtrack = 1;
         // 012 is a factor in vtm
@@ -166,7 +167,7 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
             else { 
                 while(morphism[i] == 1){
                     i--; 
-                    if(i = 0) return -1;
+                    if(i == 0) return -1;
                 }
                 morphism[i] = 1;
             }
@@ -209,7 +210,7 @@ int main(){
     int n = 2;
     int p = 1;
     int plus = 0;
-    int ltrMLen = 60;
+    int ltrMLen = 10;
 
     backtrack_search(vtm, vtmLen, yLen, xLen, n, p, plus, ltrMLen);
 
