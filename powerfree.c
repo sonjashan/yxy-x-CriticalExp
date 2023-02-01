@@ -46,6 +46,28 @@ int n_p_power_free(int str[], int sLen, int n, int p, int plus){
 //     }
 // }
 
+void apply_tern_morph(int pre[], int preLen, int h0[], int h0Len, int h1[], int h1Len, int h2[], int h2Len, int res[]){
+    int resIdx = 0;
+    for(int i = 0; i < preLen; i++){
+        if(pre[i] == 0){
+            for(int j = 0; j < h0Len; j++){
+                res[resIdx] = h0[j];
+                resIdx++;
+            }
+        } else if(pre[i] == 1){
+            for(int j = 0; j < h1Len; j++){
+                res[resIdx] = h1[j];
+                resIdx++;
+            } 
+        } else {
+            for(int j = 0; j < h2Len; j++){
+                res[resIdx] = h2[j];
+                resIdx++;
+            }
+        }
+    }
+}
+
 void printIntArray(int arr[], int arrSize){
     for(int i = 0; i < arrSize; i++){
         printf("%d  ", arr[i]);
@@ -112,6 +134,18 @@ int avoid_yxyprimex(int str[], int sLen, int yLen, int xLen){
 // int tm[300] = {0, 1};
 
 int main(){
+    int pre[] = {2,1,0,2,0,1};
+    int preLen = 6;
+    int h0[] = {1};
+    int h0Len = 1;
+    int h1[] = {2, 0};
+    int h1Len = 2;
+    int h2[] = {2, 1, 0};
+    int h2Len = 3;
+    int morphed[12];
+    apply_tern_morph(pre, preLen, h0, h0Len, h1, h1Len, h2, h2Len, morphed);
+    printIntArray(morphed, 12);
+
 
 
 
