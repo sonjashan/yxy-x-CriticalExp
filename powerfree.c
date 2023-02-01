@@ -127,47 +127,36 @@ int avoid_yxyprimex(int str[], int sLen, int yLen, int xLen){
 //     }
 // }
 
-// TODO change the morphism application for 3 letter preseq 
-// and write the vtm sequence
-
-int main(){
-    int pre[] = {2,1,0,2,0,1};
-    int preLen = 6;
-    int h0[] = {1};
-    int h0Len = 1;
-    int h1[] = {2, 0};
-    int h1Len = 2;
-    int h2[] = {2, 1, 0};
-    int h2Len = 3;
-    int morphed[12];
-    apply_tern_morph(pre, preLen, h0, h0Len, h1, h1Len, h2, h2Len, morphed);
-    // printIntArray(morphed, 12);
-
-    // create vtm length either size or size-1 or size-2
-    int vtm[20] = {2};
-    int vtmSize = 20;
+void vtmBuild(int vtm[], int vtmLen){
+    vtm[0] = 2;
     int source = 0;
     int p = 0;
-    while(p < vtmSize - 2){
+    while(p < vtmLen){
         if(vtm[source] == 0){
             vtm[p] = 1;
             p++;
         } else if(vtm[source] == 1){
             vtm[p] = 2;
-            p++;
+            p++; if(p == vtmLen) break;
             vtm[p] = 0;
             p++;
         } else {
             vtm[p] = 2;
-            p++;
+            p++; if(p == vtmLen) break;
             vtm[p] = 1;
-            p++;
+            p++; if(p == vtmLen) break;
             vtm[p] = 0;
             p++;
         }
         source++;
     }
-    // printIntArray(vtm, vtmSize);
+}
+
+int main(){
+    static int vtmLen = 20;
+    int vtm[vtmLen];
+    vtmBuild(vtm, vtmLen);
+    printIntArray(vtm, vtmLen);
 
 
 
@@ -176,6 +165,19 @@ int main(){
     // int tm[300] = {0, 1};
     // for(int x = 2; x < 300; x++) tm[x] = x&1 ? !tm[x-1] : tm[x/2];
     // // printIntArray(tm, 300);
+
+    // int pre[] = {2,1,0,2,0,1};
+    // int preLen = 6;
+    // int h0[] = {1};
+    // int h0Len = 1;
+    // int h1[] = {2, 0};
+    // int h1Len = 2;
+    // int h2[] = {2, 1, 0};
+    // int h2Len = 3;
+    // int morphed[12];
+    // apply_tern_morph(pre, preLen, h0, h0Len, h1, h1Len, h2, h2Len, morphed);
+    // printIntArray(morphed, 12);
+
 
     // int s[] = {0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1};
     // int sLen = 14;
