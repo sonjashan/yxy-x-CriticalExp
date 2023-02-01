@@ -3,11 +3,20 @@
 #include<stdio.h>
 #include<stdlib.h>
 
+void printIntArray(int arr[], int arrSize, int space){
+    for(int i = 0; i < arrSize; i++){
+        if(space) printf("%d  ", arr[i]);
+        else printf("%d", arr[i]);
+    }
+    printf("\n");
+}
+
 // only accurate if n/p is irreducible
 // assume finite length
 // n is length of factor, p is length of period
 // testing n/p+ power is essentially testing for n+1/p
 int n_p_powerfree(int str[], int sLen, int n, int p, int plus){
+    printIntArray(str, sLen, 1);
     while(n <= sLen){
         // for each letter in str
         for(int i = 0; i <= sLen - (n + plus); i++){
@@ -68,14 +77,6 @@ void apply_tern_morph(int pre[], int preLen, int h0[], int h0Len, int h1[], int 
             }
         }
     }
-}
-
-void printIntArray(int arr[], int arrSize, int space){
-    for(int i = 0; i < arrSize; i++){
-        if(space) printf("%d  ", arr[i]);
-        else printf("%d", arr[i]);
-    }
-    printf("\n");
 }
 
 int fixed_len_avoid_yxyprimex(int str[], int sLen, int yLen, int xLen){
