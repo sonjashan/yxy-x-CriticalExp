@@ -123,16 +123,19 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
     int i = 0; 
     morphism[i] = 0;
     while(i < mLen){
-        if((i + 1) % 3 == 0){
-            int h1start = (i + 1) / 3;         // this is also the len of morphism for each letter
-            int h2start = (i + 1) / 3 * 2;
-            // 012 is a factor in vtm
-            if(avoid_yxyprimex(morphism, i + 1, yLen, xLen) &&
-            n_p_power_free(morphism, i + 1, n, p, plus)){
+        // 012 is a factor in vtm
+        if(avoid_yxyprimex(morphism, i + 1, yLen, xLen) &&
+        n_p_power_free(morphism, i + 1, n, p, plus)){
+            if((i + 1) % 3 == 0){
+                int h1start = (i + 1) / 3;         // this is also the len of morphism for each letter
+                int h2start = (i + 1) / 3 * 2;
                 int postMorphLen = preLen * h1start;
                 int postMorph[postMorphLen];
                 apply_tern_morph(pre, preLen, morphism, h1start, morphism + h1start, h1start, morphism + h2start, h1start, postMorph);
                 
+                // if h(012), length=n, contains illegal factor x then h(012), length>n, contains x too
+                // but not necessary for h(210), no good example yet
+                // think about no prefix old2, new suffix, no prefix old1, old2 prefix, old0, old1 prefix
                 if(avoid_yxyprimex(postMorph, postMorphLen, yLen, xLen) &&
                 n_p_power_free(postMorph, postMorphLen, n, p, plus)){
 
@@ -144,20 +147,31 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
                     printIntArray(morphism + h2start, h1start, 0);
                     return 1;
                 }
-            }
+            } else {
+                // mLen % 3 == 0 since it is ltrMLen * 3
+                // so if we are here, i < mLen - 1
+                i++; 
+                morphism[i] = 0;
+                continue;
+            } 
         } else {
-            i++; 
-            if (i < mLen) morphism[i] = 0;
-            continue;
-        }
-        if(morphism[i] == 0) morphism[i] = 1;
-        else { 
-            while(morphism[i] == 1){
-                i--; 
-                if(i < 0) return -1;
+            if(morphism[i] == 0) morphism[i] = 1;
+            else { 
+                while(morphism[i] == 1){
+                    i--; 
+                    if(i = 0) return -1;
+                }
+                morphism[i] = 1;
             }
-            morphism[i] = 1;
         }
+
+
+
+
+
+
+
+
     }
 }
 
