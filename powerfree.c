@@ -113,10 +113,12 @@ int avoid_yxyprimex(int str[], int sLen, int yLen, int xLen){
     return 1;
 }
 
+// this is DFS!
 // for pre morphism sequences from 3 letter alphabets like vtm
 // xLen and yLen are the min length
 // mLen is the max length of morphisms we are looking for
-int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, int plus, int mLen){
+int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, int plus, int ltrMLen){
+    int mLen = ltrMLen * 3;
     int morphism[mLen];
     int i = 0; 
     morphism[i] = 0;
@@ -199,9 +201,9 @@ int main(){
     int n = 2;
     int p = 1;
     int plus = 0;
-    int mLen = 60;
+    int ltrMLen = 60;
 
-    backtrack_search(vtm, vtmLen, yLen, xLen, n, p, plus, mLen);
+    backtrack_search(vtm, vtmLen, yLen, xLen, n, p, plus, ltrMLen);
 
 
     // printIntArray(vtm, vtmLen, 1);
