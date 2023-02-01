@@ -110,22 +110,22 @@ int avoid_yxyprimex(int str[], int sLen, int yLen, int xLen){
     return 1;
 }
 
-// // xLen and yLen are the min length
-// // mLen is the max length of morphisms we are looking for
-// void backtrack_search(int pre[], int xLen, int yLen, int n, int p, int plus, int mLen){
-//     int morphism[mLen];
-//     int i = 0; 
-//     while(i < mLen){
-//         morphism[i] = 0;
-//         if((i + 1) % 2 == 0){
-//             int h1start = (i + 1) / 2;
-//             if(avoid_yxyprimex(morphism, h1start, xLen, yLen) && 
-//             avoid_yxyprimex(morphism + h1start, h1start, xLen, yLen)){
-//                 apply_bin_morph()
-//             }
-//         }
-//     }
-// }
+// xLen and yLen are the min length
+// mLen is the max length of morphisms we are looking for
+void backtrack_search(int pre[], int xLen, int yLen, int n, int p, int plus, int mLen){
+    int morphism[mLen];
+    int i = 0; 
+    while(i < mLen){
+        morphism[i] = 0;
+        if((i + 1) % 2 == 0){
+            int h1start = (i + 1) / 2;
+            if(avoid_yxyprimex(morphism, h1start, xLen, yLen) && 
+            avoid_yxyprimex(morphism + h1start, h1start, xLen, yLen)){
+                apply_bin_morph()
+            }
+        }
+    }
+}
 
 void vtmBuild(int vtm[], int vtmLen){
     vtm[0] = 2;
