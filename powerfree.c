@@ -207,7 +207,7 @@ int main(){
 
     int yLen = 2;
     int xLen = 2;
-    int n = 2;
+    int n = 3;
     int p = 1;
     int plus = 0;
     int ltrMLen = 10;
