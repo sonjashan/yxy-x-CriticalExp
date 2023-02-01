@@ -123,15 +123,15 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
     int i = 0; 
     morphism[i] = 0;
     while(i < mLen){
-        int flag1 = 0;
-        int flag2 = 1;
+        int extend = 0;
+        int backtrack = 1;
         // 012 is a factor in vtm
         if(avoid_yxyprimex(morphism, i + 1, yLen, xLen) &&
         n_p_power_free(morphism, i + 1, n, p, plus)){
-            flag2 = 0;
-            flag1 = 1;
+            backtrack = 0;
+            extend = 1;
             if((i + 1) % 3 == 0){
-                flag1 = 0;
+                extend = 0;
                 int h1start = (i + 1) / 3;         // this is also the len of morphism for each letter
                 int h2start = (i + 1) / 3 * 2;
                 int postMorphLen = preLen * h1start;
@@ -151,17 +151,17 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
                     printf("2->");
                     printIntArray(morphism + h2start, h1start, 0);
                     return 1;
-                } else if(i < mLen - 1) flag1 = 1; else flag2 = 1;
+                } else if(i < mLen - 1) extend = 1; else backtrack = 1;
             }
         }
-        if(flag1){
+        if(extend){
             // mLen % 3 == 0 since it is ltrMLen * 3
             // so if we are here, i < mLen - 1
             i++; 
             morphism[i] = 0;
             continue;
         } 
-        if(flag2){
+        if(backtrack){
             if(morphism[i] == 0) morphism[i] = 1;
             else { 
                 while(morphism[i] == 1){
