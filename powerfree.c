@@ -202,18 +202,31 @@ void vtm_build(int vtm[], int vtmLen){
 }
 
 int main(){
-    static int vtmLen = 20;
-    int vtm[vtmLen];
-    vtm_build(vtm, vtmLen);
+    // int s[] = {2, 1, 2, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3};
+    // // int s[] = {1, 2, 3, 4, 1, 2, 3, 4, 1, 2};
 
-    int yLen = 2;
-    int xLen = 2;
-    int n = 3;
+    int s[] = {0, 0, 1, 0, 0, 1, 0, 0, 1};
+    int sLen = 9;
+    int n = 3; 
     int p = 1;
-    int plus = 0;
-    int ltrMLen = 10;
+    printf("is the string %d/%d-powerfree? %d\n", n, p, n_p_powerfree(s, sLen, n, p, 0));
+    // printf("is the string %d/%d+-powerfree? %d\n", n, p, n_p_powerfree(s, sLen, n, p, 1));
 
-    backtrack_search(vtm, vtmLen, yLen, xLen, n, p, plus, ltrMLen);
+
+
+
+    // static int vtmLen = 20;
+    // int vtm[vtmLen];
+    // vtm_build(vtm, vtmLen);
+
+    // int yLen = 2;
+    // int xLen = 2;
+    // int n = 3;
+    // int p = 1;
+    // int plus = 0;
+    // int ltrMLen = 10;
+
+    // backtrack_search(vtm, vtmLen, yLen, xLen, n, p, plus, ltrMLen);
 
 
     // printIntArray(vtm, vtmLen, 1);
@@ -252,12 +265,5 @@ int main(){
     // apply_bin_morph(pre, preLen, h0, h1, h0Len, morphed);
     // printIntArray(morphed, preLen * h0Len);
 
-    // int s[] = {2, 1, 2, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3};
-    // // int s[] = {1, 2, 3, 4, 1, 2, 3, 4, 1, 2};
-    // int sLen = 16;
-    // int n = 2; 
-    // int p = 1;
-    // printf("is the string %d/%d-powerfree? %d\n", n, p, n_p_powerfree(s, sLen, n, p, 0));
-    // printf("is the string %d/%d+-powerfree? %d\n", n, p, n_p_powerfree(s, sLen, n, p, 1));
 }
 
