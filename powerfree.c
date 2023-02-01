@@ -150,7 +150,7 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
             }
         } else {
             i++; 
-            morphism[i] = 0;
+            if (i < mLen) morphism[i] = 0;
             continue;
         }
         if(morphism[i] == 0) morphism[i] = 1;
@@ -199,8 +199,9 @@ int main(){
     int n = 2;
     int p = 1;
     int plus = 0;
+    int mLen = 60;
 
-    backtrack_search(vtm, vtmLen, yLen, xLen, n, p, plus, 60);
+    backtrack_search(vtm, vtmLen, yLen, xLen, n, p, plus, mLen);
 
 
     // printIntArray(vtm, vtmLen, 1);
