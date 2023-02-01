@@ -127,11 +127,8 @@ int avoid_yxyprimex(int str[], int sLen, int yLen, int xLen){
 //     }
 // }
 
-
 // TODO change the morphism application for 3 letter preseq 
 // and write the vtm sequence
-
-// int tm[300] = {0, 1};
 
 int main(){
     int pre[] = {2,1,0,2,0,1};
@@ -144,12 +141,39 @@ int main(){
     int h2Len = 3;
     int morphed[12];
     apply_tern_morph(pre, preLen, h0, h0Len, h1, h1Len, h2, h2Len, morphed);
-    printIntArray(morphed, 12);
+    // printIntArray(morphed, 12);
+
+    // create vtm length either size or size-1 or size-2
+    int vtm[20] = {2};
+    int vtmSize = 20;
+    int source = 0;
+    int p = 0;
+    while(p < vtmSize - 2){
+        if(vtm[source] == 0){
+            vtm[p] = 1;
+            p++;
+        } else if(vtm[source] == 1){
+            vtm[p] = 2;
+            p++;
+            vtm[p] = 0;
+            p++;
+        } else {
+            vtm[p] = 2;
+            p++;
+            vtm[p] = 1;
+            p++;
+            vtm[p] = 0;
+            p++;
+        }
+        source++;
+    }
+    // printIntArray(vtm, vtmSize);
 
 
 
 
     // // build TM
+    // int tm[300] = {0, 1};
     // for(int x = 2; x < 300; x++) tm[x] = x&1 ? !tm[x-1] : tm[x/2];
     // // printIntArray(tm, 300);
 
