@@ -46,6 +46,8 @@ int n_p_power_free(int str[], int sLen, int n, int p, int plus){
 //     }
 // }
 
+// no restriction on whether h0, h1, h2 lengths are the same
+// make sure res is large enough
 void apply_tern_morph(int pre[], int preLen, int h0[], int h0Len, int h1[], int h1Len, int h2[], int h2Len, int res[]){
     int resIdx = 0;
     for(int i = 0; i < preLen; i++){
@@ -68,9 +70,10 @@ void apply_tern_morph(int pre[], int preLen, int h0[], int h0Len, int h1[], int 
     }
 }
 
-void printIntArray(int arr[], int arrSize){
+void printIntArray(int arr[], int arrSize, int space){
     for(int i = 0; i < arrSize; i++){
-        printf("%d  ", arr[i]);
+        if(space) printf("%d  ", arr[i]);
+        else printf("%d", arr[i]);
     }
     printf("\n");
 }
@@ -110,19 +113,53 @@ int avoid_yxyprimex(int str[], int sLen, int yLen, int xLen){
     return 1;
 }
 
+// for pre morphism sequences from 3 letter alphabets like vtm
 // xLen and yLen are the min length
 // mLen is the max length of morphisms we are looking for
-void backtrack_search(int pre[], int xLen, int yLen, int n, int p, int plus, int mLen){
+int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, int plus, int mLen){
     int morphism[mLen];
     int i = 0; 
+    morphism[i] = 0;
     while(i < mLen){
-        morphism[i] = 0;
-        if((i + 1) % 2 == 0){
-            int h1start = (i + 1) / 2;
-            if(avoid_yxyprimex(morphism, h1start, xLen, yLen) && 
-            avoid_yxyprimex(morphism + h1start, h1start, xLen, yLen)){
-                apply_bin_morph()
+        if((i + 1) % 3 == 0){
+            int h1start = (i + 1) / 3;         // this is also the len of morphism for each letter
+            int h2start = (i + 1) / 3 * 2;
+            if(avoid_yxyprimex(morphism, h1start, yLen, xLen) && 
+            n_p_power_free(morphism, h1start, n, p, plus) &&
+
+            avoid_yxyprimex(morphism + h1start, h1start, yLen, xLen) &&
+            n_p_power_free(morphism + h1start, h1start, n, p, plus) &&
+
+            avoid_yxyprimex(morphism + h2start, h1start, yLen, xLen) &&
+            n_p_power_free(morphism + h2start, h1start, n, p, plus)){
+                int postMorphLen = preLen * h1start;
+                int postMorph[postMorphLen];
+                apply_tern_morph(pre, preLen, morphism, h1start, morphism + h1start, h1start, morphism + h2start, h1start, postMorph);
+                
+                if(avoid_yxyprimex(postMorph, postMorphLen, yLen, xLen) &&
+                n_p_power_free(postMorph, postMorphLen, n, p, plus)){
+
+                    printf("0->");
+                    printIntArray(morphism, h1start, 0);
+                    printf("1->");
+                    printIntArray(morphism + h1start, h1start, 0);
+                    printf("2->");
+                    printIntArray(morphism + h2start, h1start, 0);
+                    return 1;
+                }
             }
+        } else {
+            i++; 
+            morphism[i] = 0;
+            continue;
+        }
+        if(morphism[i] == 0) morphism[i] = 1;
+        else { 
+            while(morphism[i] == 1){
+                i--; 
+                if(i < 0) return -1;
+            }
+            morphism[i] = 1;
         }
     }
 }
@@ -156,9 +193,17 @@ int main(){
     static int vtmLen = 20;
     int vtm[vtmLen];
     vtmBuild(vtm, vtmLen);
-    printIntArray(vtm, vtmLen);
+
+    int yLen = 2;
+    int xLen = 2;
+    int n = 2;
+    int p = 1;
+    int plus = 0;
+
+    backtrack_search(vtm, vtmLen, yLen, xLen, n, p, plus, 60);
 
 
+    // printIntArray(vtm, vtmLen, 1);
 
 
     // // build TM
