@@ -123,18 +123,19 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
     int i = 0; 
     morphism[i] = 0;
     while(i < mLen){
-        printIntArray(morphism, i + 1, 0);
         int extend = 0;
         int backtrack = 1;
+
+        int h012Len = i + 1;
         // 012 is a factor in vtm
-        if(avoid_yxyprimex(morphism, i + 1, yLen, xLen) &&
-        n_p_power_free(morphism, i + 1, n, p, plus)){
+        if(avoid_yxyprimex(morphism, h012Len, yLen, xLen) &&
+        n_p_power_free(morphism, h012Len, n, p, plus)){
             backtrack = 0;
             extend = 1;
-            if((i + 1) % 3 == 0){
+            if((h012Len) % 3 == 0){
                 extend = 0;
-                int h1start = (i + 1) / 3;         // this is also the len of morphism for each letter
-                int h2start = (i + 1) / 3 * 2;
+                int h1start = (h012Len) / 3;         // this is also the len of morphism for each letter
+                int h2start = (h012Len) / 3 * 2;
                 int postMorphLen = preLen * h1start;
                 int postMorph[postMorphLen];
                 apply_tern_morph(pre, preLen, morphism, h1start, morphism + h1start, h1start, morphism + h2start, h1start, postMorph);
