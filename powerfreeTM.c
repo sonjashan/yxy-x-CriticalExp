@@ -1,4 +1,4 @@
-// gcc -O3 -o powerfree powerfree.c
+// gcc -O3 -o TMpowerfree powerfreeTM.c
 
 #include<stdio.h>
 #include<stdlib.h>
