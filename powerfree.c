@@ -16,16 +16,18 @@ void printIntArray(int arr[], int arrSize, int space){
 // n is length of factor, p is length of period
 // testing n/p+ power is essentially testing for n+1/p
 int n_p_powerfree(int str[], int sLen, int n, int p, int plus){
-    printIntArray(str, sLen, 1);
-    while(n <= sLen){
+    // like n * k where k is 1, 2, ... 
+    int nK = n;
+    int pK = p;
+    while(nK <= sLen){
         // for each letter in str
-        for(int i = 0; i <= sLen - (n + plus); i++){
+        for(int i = 0; i <= sLen - (nK + plus); i++){
             int halt = 0;
             // for each letter in period
-            for(int j=0; j < p; j++){
-                for(int step = p; j + step < (n + plus); step += p){
-                    // printf("n = %d\n", n);
-                    // printf("p = %d\n", p);
+            for(int j=0; j < pK; j++){
+                for(int step = pK; j + step < (nK + plus); step += pK){
+                    // printf("n = %d\n", nK);
+                    // printf("p = %d\n", pK);
                     // printf("i = %d\n", i);
                     // printf("j = %d\n", j);
                     // printf("step = %d\n", step);
@@ -40,8 +42,8 @@ int n_p_powerfree(int str[], int sLen, int n, int p, int plus){
             }
             if(!halt) return 0;
         }
-        n += n;
-        p += p;
+        nK += n;
+        pK += p;
     }
     return 1;
 }
