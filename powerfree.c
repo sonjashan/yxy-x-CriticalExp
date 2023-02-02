@@ -103,7 +103,7 @@ int fixed_len_avoid_yxyprimex(int str[], int sLen, int yLen, int xLen){
 }
 
 // str is binary
-// minimum |y| and |x|
+// xLen and yLen are the min length
 int avoid_yxyprimex(int str[], int sLen, int yLen, int xLen){
     for(int i = yLen; (i + xLen) * 2 <= sLen; i++){
         for(int j = xLen; (i + j) * 2 <= sLen; j++){
@@ -118,7 +118,7 @@ int avoid_yxyprimex(int str[], int sLen, int yLen, int xLen){
 
 // this is DFS!
 // for pre morphism sequences from 3 letter alphabets like vtm
-// xLen and yLen are the min length
+// xLen and yLen are the min length as in avoid_yxyprime()
 // mLen is the max length of morphisms we are looking for
 // return 0 not found, 1 found, -1 error
 int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, int plus, int ltrMLen){
@@ -127,7 +127,7 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
     int i = 0; 
     morphism[i] = 0;
     while(i < mLen){
-        printIntArray(morphism, i + 1, 0);
+        // printIntArray(morphism, i + 1, 0);
         int extend = 0;
         int backtrack = 1;
 
@@ -218,7 +218,7 @@ int main(){
     int n = 3;
     int p = 1;
     int plus = 0;
-    int ltrMLen = 10;
+    int ltrMLen = 30;
 
     int res = backtrack_search(vtm, vtmLen, yLen, xLen, n, p, plus, ltrMLen);
     printf("backtrack search found result? %d\n", res);
