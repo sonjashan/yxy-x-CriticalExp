@@ -48,38 +48,38 @@ int n_p_powerfree(int str[], int sLen, int n, int p, int plus){
     return 1;
 }
 
-// // assume h0 and h1 are the same length
-// void apply_bin_morph(int pre[], int preLen, int h0[], int h1[], int h0Len, int res[preLen * h0Len]){
-//     for(int i = 0; i < preLen; i++){
-//         for(int j = 0; j < h0Len; j++){
-//             res[i * h0Len + j] = (pre[i] == 0)? h0[j] : h1[j];
-//         }
-//     }
-// }
-
-// no restriction on whether h0, h1, h2 lengths are the same
-// make sure res is large enough
-void apply_tern_morph(int pre[], int preLen, int h0[], int h0Len, int h1[], int h1Len, int h2[], int h2Len, int res[]){
-    int resIdx = 0;
+// assume h0 and h1 are the same length
+void apply_bin_morph(int pre[], int preLen, int h0[], int h1[], int h0Len, int res[preLen * h0Len]){
     for(int i = 0; i < preLen; i++){
-        if(pre[i] == 0){
-            for(int j = 0; j < h0Len; j++){
-                res[resIdx] = h0[j];
-                resIdx++;
-            }
-        } else if(pre[i] == 1){
-            for(int j = 0; j < h1Len; j++){
-                res[resIdx] = h1[j];
-                resIdx++;
-            } 
-        } else {
-            for(int j = 0; j < h2Len; j++){
-                res[resIdx] = h2[j];
-                resIdx++;
-            }
+        for(int j = 0; j < h0Len; j++){
+            res[i * h0Len + j] = (pre[i] == 0)? h0[j] : h1[j];
         }
     }
 }
+
+// // no restriction on whether h0, h1, h2 lengths are the same
+// // make sure res is large enough
+// void apply_tern_morph(int pre[], int preLen, int h0[], int h0Len, int h1[], int h1Len, int h2[], int h2Len, int res[]){
+//     int resIdx = 0;
+//     for(int i = 0; i < preLen; i++){
+//         if(pre[i] == 0){
+//             for(int j = 0; j < h0Len; j++){
+//                 res[resIdx] = h0[j];
+//                 resIdx++;
+//             }
+//         } else if(pre[i] == 1){
+//             for(int j = 0; j < h1Len; j++){
+//                 res[resIdx] = h1[j];
+//                 resIdx++;
+//             } 
+//         } else {
+//             for(int j = 0; j < h2Len; j++){
+//                 res[resIdx] = h2[j];
+//                 resIdx++;
+//             }
+//         }
+//     }
+// }
 
 int fixed_len_avoid_yxyprimex(int str[], int sLen, int yLen, int xLen){
     for(int i = 0; i <= sLen - (yLen + xLen) * 2; i++){
@@ -117,7 +117,7 @@ int avoid_yxyprimex(int str[], int sLen, int yLen, int xLen){
 }
 
 // this is DFS!
-// for pre morphism sequences from 3 letter alphabets like vtm
+// for pre morphism sequences from 2 letter alphabets like tm
 // xLen and yLen are the min length as in avoid_yxyprime()
 // mLen is the max length of morphisms we are looking for
 // return 0 not found, 1 found, -1 error
@@ -187,56 +187,60 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
     return -1;
 }
 
-void vtm_build(int vtm[], int vtmLen){
-    vtm[0] = 2;
-    int source = 0;
-    int p = 0;
-    while(p < vtmLen){
-        if(vtm[source] == 0){
-            vtm[p] = 1;
-            p++;
-        } else if(vtm[source] == 1){
-            vtm[p] = 2;
-            p++; if(p == vtmLen) break;
-            vtm[p] = 0;
-            p++;
-        } else {
-            vtm[p] = 2;
-            p++; if(p == vtmLen) break;
-            vtm[p] = 1;
-            p++; if(p == vtmLen) break;
-            vtm[p] = 0;
-            p++;
-        }
-        source++;
-    }
-}
+// void vtm_build(int vtm[], int vtmLen){
+//     vtm[0] = 2;
+//     int source = 0;
+//     int p = 0;
+//     while(p < vtmLen){
+//         if(vtm[source] == 0){
+//             vtm[p] = 1;
+//             p++;
+//         } else if(vtm[source] == 1){
+//             vtm[p] = 2;
+//             p++; if(p == vtmLen) break;
+//             vtm[p] = 0;
+//             p++;
+//         } else {
+//             vtm[p] = 2;
+//             p++; if(p == vtmLen) break;
+//             vtm[p] = 1;
+//             p++; if(p == vtmLen) break;
+//             vtm[p] = 0;
+//             p++;
+//         }
+//         source++;
+//     }
+// }
 
 int main(){
-    static int vtmLen = 20;
-    int vtm[vtmLen];
-    vtm_build(vtm, vtmLen);
-
-    int yLen = 2;
-    int xLen = 2;
-    int n = 5;
-    int p = 2;
-    int plus = 0;
-    int ltrMLen = 30;
-
-    int res = backtrack_search(vtm, vtmLen, yLen, xLen, n, p, plus, ltrMLen);
-    printf("backtrack search found result? %d\n", res);
+    // build TM
+    static int tmLen = 300;
+    int tm[tmLen];
+    tm[0] = 0;
+    tm[1] = 1;
+    for(int x = 2; x < tmLen; x++) tm[x] = x&1 ? !tm[x-1] : tm[x/2];
+    printIntArray(tm, tmLen, 1);
 
 
 
 
+
+
+    // static int vtmLen = 20;
+    // int vtm[vtmLen];
+    // vtm_build(vtm, vtmLen);
+
+    // int yLen = 2;
+    // int xLen = 2;
+    // int n = 5;
+    // int p = 2;
+    // int plus = 0;
+    // int ltrMLen = 30;
+
+    // int res = backtrack_search(vtm, vtmLen, yLen, xLen, n, p, plus, ltrMLen);
+    // printf("backtrack search found result? %d\n", res);
 
     // printIntArray(vtm, vtmLen, 1);
-
-    // // build TM
-    // int tm[300] = {0, 1};
-    // for(int x = 2; x < 300; x++) tm[x] = x&1 ? !tm[x-1] : tm[x/2];
-    // // printIntArray(tm, 300);
 
     // int pre[] = {2,1,0,2,0,1};
     // int preLen = 6;
