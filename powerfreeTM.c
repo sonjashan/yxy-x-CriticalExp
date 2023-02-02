@@ -122,7 +122,7 @@ int avoid_yxyprimex(int str[], int sLen, int yLen, int xLen){
 // mLen is the max length of morphisms we are looking for
 // return 0 not found, 1 found, -1 error
 int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, int plus, int ltrMLen){
-    int mLen = ltrMLen * 3;
+    int mLen = ltrMLen * 2;
     int morphism[mLen];
     int i = 0; 
     morphism[i] = 0;
@@ -133,23 +133,22 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
         int extend = 0;
         int backtrack = 1;
 
-        int h012Len = i + 1;
-        // 012 is a factor in vtm
-        if(avoid_yxyprimex(morphism, h012Len, yLen, xLen) &&
-        n_p_powerfree(morphism, h012Len, n, p, plus)){
+        int h01Len = i + 1;
+        // 01 is a factor in tm
+        if(avoid_yxyprimex(morphism, h01Len, yLen, xLen) &&
+        n_p_powerfree(morphism, h01Len, n, p, plus)){
             backtrack = 0;
             extend = 1;
-            if((h012Len) % 3 == 0){
+            if((h01Len) % 2 == 0){
                 extend = 0;
-                int h1start = (h012Len) / 3;         // this is also the len of morphism for each letter
-                int h2start = (h012Len) / 3 * 2;
+                int h1start = (h01Len) / 2;         // this is also the len of morphism for each letter
                 int postMorphLen = preLen * h1start;
                 int postMorph[postMorphLen];
-                apply_tern_morph(pre, preLen, morphism, h1start, morphism + h1start, h1start, morphism + h2start, h1start, postMorph);
+                apply_bin_morph(pre, preLen, morphism, morphism + h1start, h1start, postMorph);
                 
-                // if h(012), length=n, contains illegal factor x then h(012), length>n, contains x too
-                // but not necessary for h(210), no good example yet
-                // think about no prefix old2, new suffix, no prefix old1, old2 prefix, old0, old1 prefix
+                // if h(01), length=n, contains illegal factor x then h(01), length>n, contains x too
+                // but not necessary for h(10), no good example yet
+                // think about no prefix old1, new suffix, old0, old1 prefix
                 if(avoid_yxyprimex(postMorph, postMorphLen, yLen, xLen) &&
                 n_p_powerfree(postMorph, postMorphLen, n, p, plus)){
 
@@ -157,14 +156,12 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
                     printIntArray(morphism, h1start, 0);
                     printf("1->");
                     printIntArray(morphism + h1start, h1start, 0);
-                    printf("2->");
-                    printIntArray(morphism + h2start, h1start, 0);
                     return 1;
                 } else if(i < mLen - 1) extend = 1; else backtrack = 1;
             }
         }
         if(extend){
-            // mLen % 3 == 0 since it is ltrMLen * 3
+            // mLen % 2 == 0 since it is ltrMLen * 2
             // so if we are here, i < mLen - 1
             i++; 
             morphism[i] = 0;
@@ -219,8 +216,17 @@ int main(){
     tm[0] = 0;
     tm[1] = 1;
     for(int x = 2; x < tmLen; x++) tm[x] = x&1 ? !tm[x-1] : tm[x/2];
-    printIntArray(tm, tmLen, 1);
+    // printIntArray(tm, tmLen, 1);
 
+    int yLen = 2;
+    int xLen = 2;
+    int n = 13;
+    int p = 5;
+    int plus = 1;
+    int ltrMLen = 30;
+
+    int res = backtrack_search(tm, tmLen, yLen, xLen, n, p, plus, ltrMLen);
+    printf("backtrack search found result? %d\n", res);
 
 
 
