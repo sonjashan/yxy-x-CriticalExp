@@ -120,12 +120,14 @@ int avoid_yxyprimex(int str[], int sLen, int yLen, int xLen){
 // for pre morphism sequences from 3 letter alphabets like vtm
 // xLen and yLen are the min length
 // mLen is the max length of morphisms we are looking for
+// return 0 not found, 1 found, -1 error
 int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, int plus, int ltrMLen){
     int mLen = ltrMLen * 3;
     int morphism[mLen];
     int i = 0; 
     morphism[i] = 0;
     while(i < mLen){
+        printIntArray(morphism, i + 1, 0);
         int extend = 0;
         int backtrack = 1;
 
@@ -171,12 +173,14 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
             else { 
                 while(morphism[i] == 1){
                     i--; 
-                    if(i == 0) return -1;
+                    if(i == 0) return 0;
                 }
                 morphism[i] = 1;
             }
         }
     }
+    printf("ERROR: i should never >= mLen, as i only advance in if(extend)\n");
+    return -1;
 }
 
 void vtm_build(int vtm[], int vtmLen){
@@ -216,7 +220,8 @@ int main(){
     int plus = 0;
     int ltrMLen = 10;
 
-    backtrack_search(vtm, vtmLen, yLen, xLen, n, p, plus, ltrMLen);
+    int res = backtrack_search(vtm, vtmLen, yLen, xLen, n, p, plus, ltrMLen);
+    printf("backtrack search found result? %d\n", res);
 
 
 
