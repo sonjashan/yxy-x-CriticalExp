@@ -173,6 +173,7 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
                 printf("ERROR: Did you change psCount without changing the loop that constructs the suffixes and predfixes?\n");
             }
         }
+
         // vtm is squarefree
         int ab[psLen * 2], ac[psLen * 2], ba[psLen * 2], bc[psLen * 2], ca[psLen * 2], cb[psLen * 2];
         concat(sa, psLen, pb, psLen, ab);
@@ -182,7 +183,22 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
         concat(sc, psLen, pa, psLen, ca);
         concat(sc, psLen, pb, psLen, cb);
 
-        
+        if(avoid_yxyprimex(ab, psLen * 2, yLen, xLen) &&
+        n_p_powerfree(ab, psLen * 2, n, p, plus) &&
+        avoid_yxyprimex(ac, psLen * 2, yLen, xLen) &&
+        n_p_powerfree(ac, psLen * 2, n, p, plus) &&
+        avoid_yxyprimex(ba, psLen * 2, yLen, xLen) &&
+        n_p_powerfree(ba, psLen * 2, n, p, plus) &&
+        avoid_yxyprimex(bc, psLen * 2, yLen, xLen) &&
+        n_p_powerfree(bc, psLen * 2, n, p, plus) &&
+        avoid_yxyprimex(ca, psLen * 2, yLen, xLen) &&
+        n_p_powerfree(ca, psLen * 2, n, p, plus) &&
+        avoid_yxyprimex(cb, psLen * 2, yLen, xLen) &&
+        n_p_powerfree(cb, psLen * 2, n, p, plus)){
+            
+        }
+
+
         
 
 
