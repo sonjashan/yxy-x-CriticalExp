@@ -116,12 +116,16 @@ int avoid_yxyprimex(int str[], int sLen, int yLen, int xLen){
     return 1;
 }
 
+// round up a divided by b
+int ceiling(int a, int b){ return (a+b-1)/b; }
+
 // this is DFS!
 // for pre morphism sequences from 3 letter alphabets like vtm
 // xLen and yLen are the min length as in avoid_yxyprime()
 // mLen is the max length of morphisms we are looking for
 // return 0 not found, 1 found, -1 error
 int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, int plus, int ltrMLen){
+    int psCount = 6;          // vtm uses a 3 letter alphabet and h of a, b, c each has a pre- and suffixes
     int mLen = ltrMLen * 3;
     int morphism[mLen];
     int i = 0; 
@@ -133,36 +137,74 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
         int extend = 0;
         int backtrack = 1;
 
-        int h012Len = i + 1;
-        // 012 is a factor in vtm
-        if(avoid_yxyprimex(morphism, h012Len, yLen, xLen) &&
-        n_p_powerfree(morphism, h012Len, n, p, plus)){
-            backtrack = 0;
-            extend = 1;
-            if((h012Len) % 3 == 0){
-                extend = 0;
-                int h1start = (h012Len) / 3;         // this is also the len of morphism for each letter
-                int h2start = (h012Len) / 3 * 2;
-                int postMorphLen = preLen * h1start;
-                int postMorph[postMorphLen];
-                apply_tern_morph(pre, preLen, morphism, h1start, morphism + h1start, h1start, morphism + h2start, h1start, postMorph);
-                
-                // if h(012), length=n, contains illegal factor x then h(012), length>n, contains x too
-                // but not necessary for h(210), no good example yet
-                // think about no prefix old2, new suffix, no prefix old1, old2 prefix, old0, old1 prefix
-                if(avoid_yxyprimex(postMorph, postMorphLen, yLen, xLen) &&
-                n_p_powerfree(postMorph, postMorphLen, n, p, plus)){
+        int hLen = i + 1;
+        int psLen = ceiling(hLen, psCount);
+        int pa[psLen], pb[psLen], pc[psLen], sa[psLen], sb[psLen], sc[psLen];
+        int paIdx, pbIdx, pcIdx = 0;
+        int saIdx, sbIdx, scIdx = psLen - 1;
 
-                    printf("0->");
-                    printIntArray(morphism, h1start, 0);
-                    printf("1->");
-                    printIntArray(morphism + h1start, h1start, 0);
-                    printf("2->");
-                    printIntArray(morphism + h2start, h1start, 0);
-                    return 1;
-                } else if(i < mLen - 1) extend = 1; else backtrack = 1;
+        // psLen is at least 1/6 of hLen, so should not run out of space
+        for(int j = 0; j < hLen; j++){
+            if(j % psCount == 0){
+                pa[paIdx] = morphism[j];
+                paIdx++;
+            } else if(j % psCount == 1){
+                sa[saIdx] = morphism[j];
+                saIdx--;
+            } else if(j % psCount == 2){
+                pb[pbIdx] = morphism[j];
+                pbIdx++;
+            } else if(j % psCount == 3){
+                sb[sbIdx] = morphism[j];
+                sbIdx--;
+            } else if(j % psCount == 4){
+                pc[pcIdx] = morphism[j];
+                pcIdx++;
+            } else if(j % psCount == 5){
+                sc[scIdx] = morphism[j];
+                scIdx--;
+            } else {
+                printf("ERROR: Did you change psCount without changing the loop that constructs the suffixes and predfixes?\n");
             }
         }
+
+        
+
+
+        
+        
+        
+        
+        
+        
+        // if(avoid_yxyprimex(morphism, h012Len, yLen, xLen) &&
+        // n_p_powerfree(morphism, h012Len, n, p, plus)){
+        //     backtrack = 0;
+        //     extend = 1;
+        //     if((h012Len) % 3 == 0){
+        //         extend = 0;
+        //         int h1start = (h012Len) / 3;         // this is also the len of morphism for each letter
+        //         int h2start = (h012Len) / 3 * 2;
+        //         int postMorphLen = preLen * h1start;
+        //         int postMorph[postMorphLen];
+        //         apply_tern_morph(pre, preLen, morphism, h1start, morphism + h1start, h1start, morphism + h2start, h1start, postMorph);
+                
+        //         // if h(012), length=n, contains illegal factor x then h(012), length>n, contains x too
+        //         // but not necessary for h(210), no good example yet
+        //         // think about no prefix old2, new suffix, no prefix old1, old2 prefix, old0, old1 prefix
+        //         if(avoid_yxyprimex(postMorph, postMorphLen, yLen, xLen) &&
+        //         n_p_powerfree(postMorph, postMorphLen, n, p, plus)){
+
+        //             printf("0->");
+        //             printIntArray(morphism, h1start, 0);
+        //             printf("1->");
+        //             printIntArray(morphism + h1start, h1start, 0);
+        //             printf("2->");
+        //             printIntArray(morphism + h2start, h1start, 0);
+        //             return 1;
+        //         } else if(i < mLen - 1) extend = 1; else backtrack = 1;
+        //     }
+        // }
         if(extend){
             // mLen % 3 == 0 since it is ltrMLen * 3
             // so if we are here, i < mLen - 1
