@@ -125,6 +125,8 @@ void concat(int s1[], int s1Len, int s2[], int s2Len, int s1s2[s1Len + s2Len]){
     for(int i = 0; i < s2Len; i++) s1s2[i + s1Len] = s2[i];    
 }
 
+
+
 // this is DFS!
 // for pre morphism sequences from 3 letter alphabets like vtm
 // xLen and yLen are the min length as in avoid_yxyprime()
@@ -144,58 +146,71 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
         int backtrack = 1;
 
         int hLen = i + 1;
-        int psLen = ceiling(hLen, psCount);
-        int pa[psLen], pb[psLen], pc[psLen], sa[psLen], sb[psLen], sc[psLen];
+        int psLen = ceiling(hLen, psCount);     // pre- or suffix length
+        int pa[psLen], pb[psLen], pc[psLen], sa[psLen], sb[psLen], sc[psLen];       // pa is prefix of h(a)
         int paIdx, pbIdx, pcIdx = 0;
         int saIdx, sbIdx, scIdx = psLen - 1;
+        int paLen, pbLen, pcLen, saLen, sbLen, scLen = 0;       // need the precise length for use later
 
         // psLen is at least 1/6 of hLen, so should not run out of space
         for(int j = 0; j < hLen; j++){
             if(j % psCount == 0){
                 pa[paIdx] = morphism[j];
                 paIdx++;
+                paLen++;
             } else if(j % psCount == 1){
                 sa[saIdx] = morphism[j];
                 saIdx--;
+                saLen++;
             } else if(j % psCount == 2){
                 pb[pbIdx] = morphism[j];
                 pbIdx++;
+                pbLen++;
             } else if(j % psCount == 3){
                 sb[sbIdx] = morphism[j];
                 sbIdx--;
+                sbLen++;
             } else if(j % psCount == 4){
                 pc[pcIdx] = morphism[j];
                 pcIdx++;
+                pcLen++;
             } else if(j % psCount == 5){
                 sc[scIdx] = morphism[j];
                 scIdx--;
+                scLen++;
             } else {
                 printf("ERROR: Did you change psCount without changing the loop that constructs the suffixes and predfixes?\n");
             }
         }
-
+// !!!!!!!undefined behaviour for really short morphism strings
         // vtm is squarefree
-        int ab[psLen * 2], ac[psLen * 2], ba[psLen * 2], bc[psLen * 2], ca[psLen * 2], cb[psLen * 2];
-        concat(sa, psLen, pb, psLen, ab);
-        concat(sa, psLen, pc, psLen, ac);
-        concat(sb, psLen, pa, psLen, ba);
-        concat(sb, psLen, pc, psLen, bc);
-        concat(sc, psLen, pa, psLen, ca);
-        concat(sc, psLen, pb, psLen, cb);
+        int ab[saLen + pbLen], ac[saLen + pcLen], ba[sbLen + paLen], bc[sbLen + pcLen], ca[scLen + paLen], cb[scLen + pbLen];
+        concat(sa, saLen, pb, pbLen, ab);
+        concat(sa, saLen, pc, pcLen, ac);
+        concat(sb, sbLen, pa, paLen, ba);
+        concat(sb, sbLen, pc, pcLen, bc);
+        concat(sc, scLen, pa, paLen, ca);
+        concat(sc, scLen, pb, pbLen, cb);
 
-        if(avoid_yxyprimex(ab, psLen * 2, yLen, xLen) &&
-        n_p_powerfree(ab, psLen * 2, n, p, plus) &&
-        avoid_yxyprimex(ac, psLen * 2, yLen, xLen) &&
-        n_p_powerfree(ac, psLen * 2, n, p, plus) &&
-        avoid_yxyprimex(ba, psLen * 2, yLen, xLen) &&
-        n_p_powerfree(ba, psLen * 2, n, p, plus) &&
-        avoid_yxyprimex(bc, psLen * 2, yLen, xLen) &&
-        n_p_powerfree(bc, psLen * 2, n, p, plus) &&
-        avoid_yxyprimex(ca, psLen * 2, yLen, xLen) &&
-        n_p_powerfree(ca, psLen * 2, n, p, plus) &&
-        avoid_yxyprimex(cb, psLen * 2, yLen, xLen) &&
-        n_p_powerfree(cb, psLen * 2, n, p, plus)){
-            
+        if(avoid_yxyprimex(ab, saLen + pbLen, yLen, xLen) &&
+        n_p_powerfree(ab, saLen + pbLen, n, p, plus) &&
+        avoid_yxyprimex(ac, saLen + pcLen, yLen, xLen) &&
+        n_p_powerfree(ac, saLen + pcLen, n, p, plus) &&
+        avoid_yxyprimex(ba, sbLen + paLen, yLen, xLen) &&
+        n_p_powerfree(ba, sbLen + paLen, n, p, plus) &&
+        avoid_yxyprimex(bc, sbLen + pcLen, yLen, xLen) &&
+        n_p_powerfree(bc, sbLen + pcLen, n, p, plus) &&
+        avoid_yxyprimex(ca, scLen + paLen, yLen, xLen) &&
+        n_p_powerfree(ca, scLen + paLen, n, p, plus) &&
+        avoid_yxyprimex(cb, scLen + pbLen, yLen, xLen) &&
+        n_p_powerfree(cb, scLen + pbLen, n, p, plus)){
+            int h0Len = paLen + saLen;
+            int h0[h0Len]; 
+            int h1Len = pbLen + sbLen;
+            int h1[h1Len]; 
+            int h2Len = pcLen + scLen;
+            int h2[h2Len]; 
+
         }
 
 
