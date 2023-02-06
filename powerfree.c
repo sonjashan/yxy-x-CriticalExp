@@ -119,6 +119,12 @@ int avoid_yxyprimex(int str[], int sLen, int yLen, int xLen){
 // round up a divided by b
 int ceiling(int a, int b){ return (a+b-1)/b; }
 
+// concatenate s2 to the end of s1, result is s1s2
+void concat(int s1[], int s1Len, int s2[], int s2Len, int s1s2[s1Len + s2Len]){
+    for(int i = 0; i < s1Len; i++) s1s2[i] = s1[i];
+    for(int i = 0; i < s2Len; i++) s1s2[i + s1Len] = s2[i];    
+}
+
 // this is DFS!
 // for pre morphism sequences from 3 letter alphabets like vtm
 // xLen and yLen are the min length as in avoid_yxyprime()
@@ -167,6 +173,18 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
                 printf("ERROR: Did you change psCount without changing the loop that constructs the suffixes and predfixes?\n");
             }
         }
+        // vtm is squarefree
+        int ab[psLen * 2], ac[psLen * 2], ba[psLen * 2], bc[psLen * 2], ca[psLen * 2], cb[psLen * 2];
+        concat(sa, psLen, pb, psLen, ab);
+        concat(sa, psLen, pc, psLen, ac);
+        concat(sb, psLen, pa, psLen, ba);
+        concat(sb, psLen, pc, psLen, bc);
+        concat(sc, psLen, pa, psLen, ca);
+        concat(sc, psLen, pb, psLen, cb);
+
+        
+        
+
 
         
 
