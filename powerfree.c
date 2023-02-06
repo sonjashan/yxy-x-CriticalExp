@@ -125,8 +125,6 @@ void concat(int s1[], int s1Len, int s2[], int s2Len, int s1s2[s1Len + s2Len]){
     for(int i = 0; i < s2Len; i++) s1s2[i + s1Len] = s2[i];    
 }
 
-
-
 // this is DFS!
 // for pre morphism sequences from 3 letter alphabets like vtm
 // xLen and yLen are the min length as in avoid_yxyprime()
@@ -204,14 +202,19 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
         n_p_powerfree(ca, scLen + paLen, n, p, plus) &&
         avoid_yxyprimex(cb, scLen + pbLen, yLen, xLen) &&
         n_p_powerfree(cb, scLen + pbLen, n, p, plus)){
+
             int h0Len = paLen + saLen;
             int h0[h0Len]; 
+            concat(pa, paLen, sa, saLen, h0);
             int h1Len = pbLen + sbLen;
             int h1[h1Len]; 
+            concat(pb, pbLen, sb, sbLen, h1);
             int h2Len = pcLen + scLen;
             int h2[h2Len]; 
-
-        }
+            concat(pc, pcLen, sc, scLen, h2);
+            
+            apply_tern_morph
+            }
 
 
         
