@@ -126,6 +126,8 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
     int morphism[mLen];
     int i = 0; 
     morphism[i] = 0;
+
+    int count = 0;
     while(i < mLen){
         // printIntArray(morphism, i + 1, 0);
         int extend = 0;
@@ -178,6 +180,8 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
                 morphism[i] = 1;
             }
         }
+        count++;
+        if(count % 10000 == 0) printf("checked %d potential sequences\n", count);
     }
     printf("ERROR: i should never >= mLen, as i only advance in if(extend)\n");
     return -1;
@@ -215,9 +219,9 @@ int main(){
 
     int yLen = 2;
     int xLen = 2;
-    int n = 3;
-    int p = 1;
-    int plus = 0;
+    int n = 5;
+    int p = 2;
+    int plus = 1;
     int ltrMLen = 30;
 
     int res = backtrack_search(vtm, vtmLen, yLen, xLen, n, p, plus, ltrMLen);
