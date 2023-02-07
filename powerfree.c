@@ -59,7 +59,7 @@ int n_p_powerfree(int str[], int sLen, int n, int p, int plus){
 
 // no restriction on whether h0, h1, h2 lengths are the same
 // make sure res is large enough
-void apply_tern_morph(int pre[], int preLen, int h0[], int h0Len, int h1[], int h1Len, int h2[], int h2Len, int res[]){
+int apply_tern_morph(int pre[], int preLen, int h0[], int h0Len, int h1[], int h1Len, int h2[], int h2Len, int res[]){
     int resIdx = 0;
     for(int i = 0; i < preLen; i++){
         if(pre[i] == 0){
@@ -79,6 +79,7 @@ void apply_tern_morph(int pre[], int preLen, int h0[], int h0Len, int h1[], int 
             }
         }
     }
+    return resIdx;
 }
 
 int fixed_len_avoid_yxyprimex(int str[], int sLen, int yLen, int xLen){
@@ -202,6 +203,8 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
         n_p_powerfree(ca, scLen + paLen, n, p, plus) &&
         avoid_yxyprimex(cb, scLen + pbLen, yLen, xLen) &&
         n_p_powerfree(cb, scLen + pbLen, n, p, plus)){
+            backtrack = 0;
+            extend = 1;
 
             int h0Len = paLen + saLen;
             int h0[h0Len]; 
@@ -212,21 +215,27 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
             int h2Len = pcLen + scLen;
             int h2[h2Len]; 
             concat(pc, pcLen, sc, scLen, h2);
-            
-            apply_tern_morph
-            }
 
 
-        
+            // !!!!!!!!!!!circular logic
+            int postMorphLen;
+            int postMorph[postMorphLen];
+            postMorphLen = apply_tern_morph(pre, preLen, h0, h0Len, h1, h1Len, h2, h2Len, postMorph);
+
+            if(avoid_yxyprimex(postMorph, postMorphLen, yLen, xLen) &&
+            n_p_powerfree(postMorph, postMorphLen, n, p, plus)){
+
+                printf("0->");
+                printIntArray(h0, h0Len, 0);
+                printf("1->");
+                printIntArray(h1, h1Len, 0);
+                printf("2->");
+                printIntArray(h2, h2Len, 0);
+                return 1;
+            } else if(i < mLen - 1) extend = 1; else backtrack = 1;
+        }
 
 
-        
-
-
-        
-        
-        
-        
         
         
         // if(avoid_yxyprimex(morphism, h012Len, yLen, xLen) &&
@@ -258,6 +267,7 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
         //     }
         // }
         if(extend){
+            // !!!!!!!!!!!!!to fix
             // mLen % 3 == 0 since it is ltrMLen * 3
             // so if we are here, i < mLen - 1
             i++; 
