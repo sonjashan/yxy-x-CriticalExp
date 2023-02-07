@@ -223,11 +223,8 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
             int h2[h2Len]; 
             concat(pc, pcLen, sc, scLen, h2);
 
-
-            // !!!!!!!!!!!circular logic
-            int postMorphLen;
-            int postMorph[postMorphLen];
-            postMorphLen = apply_tern_morph(pre, preLen, h0, h0Len, h1, h1Len, h2, h2Len, postMorph);
+            int postMorph[max(h0Len, h1Len, h2Len) * preLen];
+            int postMorphLen = apply_tern_morph(pre, preLen, h0, h0Len, h1, h1Len, h2, h2Len, postMorph);
 
             if(avoid_yxyprimex(postMorph, postMorphLen, yLen, xLen) &&
             n_p_powerfree(postMorph, postMorphLen, n, p, plus)){
