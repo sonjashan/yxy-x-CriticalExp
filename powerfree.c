@@ -126,6 +126,13 @@ void concat(int s1[], int s1Len, int s2[], int s2Len, int s1s2[s1Len + s2Len]){
     for(int i = 0; i < s2Len; i++) s1s2[i + s1Len] = s2[i];    
 }
 
+int max(int n1, int n2, int n3){
+    int res = n1;
+    if(n2 > res) res = n2;
+    if(n3 > res) res = n3;
+    return res;
+}
+
 // this is DFS!
 // for pre morphism sequences from 3 letter alphabets like vtm
 // xLen and yLen are the min length as in avoid_yxyprime()
