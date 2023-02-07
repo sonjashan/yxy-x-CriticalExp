@@ -188,7 +188,7 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
                 printf("ERROR: Did you change psCount without changing the loop that constructs the suffixes and predfixes?\n");
             }
         }
-// !!!!!!!undefined behaviour for really short morphism strings
+
         // vtm is squarefree
         int ab[saLen + pbLen], ac[saLen + pcLen], ba[sbLen + paLen], bc[sbLen + pcLen], ca[scLen + paLen], cb[scLen + pbLen];
         concat(sa, saLen, pb, pbLen, ab);
