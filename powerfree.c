@@ -292,19 +292,19 @@ void vtm_build(int vtm[], int vtmLen){
 }
 
 int main(){
-    static int vtmLen = 20;
-    int vtm[vtmLen];
-    vtm_build(vtm, vtmLen);
+    // static int vtmLen = 20;
+    // int vtm[vtmLen];
+    // vtm_build(vtm, vtmLen);
 
-    int yLen = 2;
-    int xLen = 2;
-    int n = 5;
-    int p = 2;
-    int plus = 1;
-    int ltrMLen = 30;
+    // int yLen = 2;
+    // int xLen = 2;
+    // int n = 5;
+    // int p = 2;
+    // int plus = 1;
+    // int ltrMLen = 30;
 
-    int res = backtrack_search(vtm, vtmLen, yLen, xLen, n, p, plus, ltrMLen);
-    printf("backtrack search found result? %d\n", res);
+    // int res = backtrack_search(vtm, vtmLen, yLen, xLen, n, p, plus, ltrMLen);
+    // printf("backtrack search found result? %d\n", res);
 
 
 
