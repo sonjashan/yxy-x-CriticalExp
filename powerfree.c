@@ -292,6 +292,16 @@ void vtm_build(int vtm[], int vtmLen){
 }
 
 int main(){
+
+    int s1[] = {};
+    int s1Len = 0;
+    int s2[] = {1,3,5,6,7};
+    int s2Len = 5;
+    int s1s2[s1Len + s2Len];
+    concat(s1, s1Len, s2, s2Len,s1s2);
+    printIntArray(s1s2, s1Len + s2Len, 1);
+
+
     // static int vtmLen = 20;
     // int vtm[vtmLen];
     // vtm_build(vtm, vtmLen);
@@ -309,6 +319,8 @@ int main(){
 
 
 
+    // printf("ceiling of %d/%d: %d\n", 3, 4, ceiling(3, 4));
+    // printf("ceiling of %d/%d: %d\n", 2, 1, ceiling(2, 1));
 
     // printIntArray(vtm, vtmLen, 1);
 
