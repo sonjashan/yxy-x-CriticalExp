@@ -293,13 +293,19 @@ void vtm_build(int vtm[], int vtmLen){
 
 int main(){
 
-    int s1[] = {};
-    int s1Len = 0;
-    int s2[] = {1,3,5,6,7};
-    int s2Len = 5;
-    int s1s2[s1Len + s2Len];
-    concat(s1, s1Len, s2, s2Len,s1s2);
-    printIntArray(s1s2, s1Len + s2Len, 1);
+
+    // int n1 = 411;
+    // int n2 = 42;
+    // int n3 = -4;
+    // printf("max of %d, %d, and %d is %d\n", n1, n2, n3, max(n1, n2, n3));
+
+    // int s1[] = {};
+    // int s1Len = 0;
+    // int s2[] = {1,3,5,6,7};
+    // int s2Len = 5;
+    // int s1s2[s1Len + s2Len];
+    // concat(s1, s1Len, s2, s2Len,s1s2);
+    // printIntArray(s1s2, s1Len + s2Len, 1);
 
 
     // static int vtmLen = 20;
