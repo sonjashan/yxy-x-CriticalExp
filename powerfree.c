@@ -139,8 +139,8 @@ int max(int n1, int n2, int n3){
 // mLen is the max length of morphisms we are looking for
 // return 0 not found, 1 found, -1 error
 int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, int plus, int ltrMLen){
-    int psCount = 6;          // vtm uses a 3 letter alphabet and h of a, b, c each has a pre- and suffixes
-    int mLen = ltrMLen * 3;
+    int psCount = 6;            // vtm uses a 3 letter alphabet and h of a, b, c each has a pre- and suffixes
+    int mLen = ltrMLen * 3;     // morphism is an array that includes h(0), h(1), and h(2), see prefix suffix search.pdf
     int morphism[mLen];
     int i = 0; 
     morphism[i] = 0;
@@ -151,12 +151,12 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
         int extend = 0;
         int backtrack = 1;
 
-        int hLen = i + 1;       // the morphism length so far
+        int hLen = i + 1;                       // the morphism length so far
         int psLen = ceiling(hLen, psCount);     // pre- or suffix max length = ceiling(hLen / psCount)
         int pa[psLen], pb[psLen], pc[psLen], sa[psLen], sb[psLen], sc[psLen];       // pa is prefix of h(a)
-        int paIdx, pbIdx, pcIdx = 0;
-        int saIdx, sbIdx, scIdx = psLen - 1;
-        int paLen, pbLen, pcLen, saLen, sbLen, scLen = 0;       // need the precise length for use later
+        int paIdx = 0, pbIdx = 0, pcIdx = 0;
+        int saIdx = psLen - 1, sbIdx = psLen - 1, scIdx = psLen - 1;
+        int paLen = 0, pbLen = 0, pcLen = 0, saLen = 0, sbLen = 0, scLen = 0;       // need the precise length for use later
 
         // psLen is at least 1/6 of hLen, so should not run out of space
         for(int j = 0; j < hLen; j++){
@@ -292,6 +292,24 @@ void vtm_build(int vtm[], int vtmLen){
 }
 
 int main(){
+    static int vtmLen = 20;
+    int vtm[vtmLen];
+    vtm_build(vtm, vtmLen);
+
+    int yLen = 2;
+    int xLen = 2;
+    int n = 5;
+    int p = 2;
+    int plus = 1;
+    int ltrMLen = 30;
+
+    int res = backtrack_search(vtm, vtmLen, yLen, xLen, n, p, plus, ltrMLen);
+    printf("backtrack search found result? %d\n", res);
+
+
+
+
+
 
 
     // int n1 = 411;
@@ -306,24 +324,6 @@ int main(){
     // int s1s2[s1Len + s2Len];
     // concat(s1, s1Len, s2, s2Len,s1s2);
     // printIntArray(s1s2, s1Len + s2Len, 1);
-
-
-    // static int vtmLen = 20;
-    // int vtm[vtmLen];
-    // vtm_build(vtm, vtmLen);
-
-    // int yLen = 2;
-    // int xLen = 2;
-    // int n = 5;
-    // int p = 2;
-    // int plus = 1;
-    // int ltrMLen = 30;
-
-    // int res = backtrack_search(vtm, vtmLen, yLen, xLen, n, p, plus, ltrMLen);
-    // printf("backtrack search found result? %d\n", res);
-
-
-
 
     // printf("ceiling of %d/%d: %d\n", 3, 4, ceiling(3, 4));
     // printf("ceiling of %d/%d: %d\n", 2, 1, ceiling(2, 1));
