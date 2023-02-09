@@ -15,7 +15,7 @@ void printIntArray(int arr[], int arrSize, int space){
 // // assume finite length
 // // n is length of factor, p is length of period
 // // testing n/p+ power is essentially testing for n+1/p
-// int n_p_powerfree(int str[], int sLen, int n, int p, int plus){
+int n_p_powerfree(int str[], int sLen, int n, int p, int plus){
 //     // like n * k where k is 1, 2, ... 
 //     int nK = n;
 //     int pK = p;
@@ -45,8 +45,8 @@ void printIntArray(int arr[], int arrSize, int space){
 //         nK += n;
 //         pK += p;
 //     }
-//     return 1;
-// }
+    return 1;
+}
 
 int fixed_n_p_powerfree(int str[], int sLen, int n, int p){
     // for each letter in str
@@ -319,19 +319,35 @@ void vtm_build(int vtm[], int vtmLen){
 }
 
 int main(){
-    static int vtmLen = 100;
-    int vtm[vtmLen];
-    vtm_build(vtm, vtmLen);
+    // int s[] = {2, 1, 2, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3};
+    // int s[] = {1, 2, 3, 4, 1, 2, 3, 4, 1, 2};
+    // int s[] = {0, 0, 1, 0, 0, 1, 0, 0, 1};
+    int s[] = {0, 0, 1, 1, 1, 0, 0, 0, 1};
+    int sLen = 9;
+    int n = 3; 
+    int p = 1;
+    // given 001001001 and 3/1 power, fixed..() should give 1
+    // given 001110001 and 3/1 power, fixed..() should give 0
+    printf("is the string %d/%d-powerfree? %d\n", n, p, fixed_n_p_powerfree(s, sLen, n, p));
 
-    int yLen = 2;
-    int xLen = 2;
-    int n = 5;
-    int p = 2;
-    int plus = 1;
-    int ltrMLen = 20;
 
-    int res = backtrack_search(vtm, vtmLen, yLen, xLen, n, p, plus, ltrMLen);
-    printf("backtrack search found result? %d\n", res);
+
+
+
+
+    // static int vtmLen = 100;
+    // int vtm[vtmLen];
+    // vtm_build(vtm, vtmLen);
+
+    // int yLen = 2;
+    // int xLen = 2;
+    // int n = 5;
+    // int p = 2;
+    // int plus = 1;
+    // int ltrMLen = 20;
+
+    // int res = backtrack_search(vtm, vtmLen, yLen, xLen, n, p, plus, ltrMLen);
+    // printf("backtrack search found result? %d\n", res);
 
 
 
