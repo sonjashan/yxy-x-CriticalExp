@@ -3,49 +3,15 @@
 #include<stdio.h>
 #include<stdlib.h>
 
+// round up a divided by b
+int ceiling(int a, int b){ return (a+b-1)/b; }
+
 void printIntArray(int arr[], int arrSize, int space){
     for(int i = 0; i < arrSize; i++){
         if(space) printf("%d  ", arr[i]);
         else printf("%d", arr[i]);
     }
     printf("\n");
-}
-
-// // only accurate if n/p is irreducible
-// // assume finite length
-// // n is length of factor, p is length of period
-// // testing n/p+ power is essentially testing for n+1/p
-int n_p_powerfree(int str[], int sLen, int n, int p, int plus){
-//     // like n * k where k is 1, 2, ... 
-//     int nK = n;
-//     int pK = p;
-//     while(nK <= sLen){
-//         // for each letter in str
-//         for(int i = 0; i <= sLen - (nK + plus); i++){
-//             int halt = 0;
-//             // for each letter in period
-//             for(int j=0; j < pK; j++){
-//                 for(int step = pK; j + step < (nK + plus); step += pK){
-//                     // printf("n = %d\n", nK);
-//                     // printf("p = %d\n", pK);
-//                     // printf("i = %d\n", i);
-//                     // printf("j = %d\n", j);
-//                     // printf("step = %d\n", step);
-//                     // printf("--------------\n");
-
-//                     if(str[i + j] != str[i + j + step]){
-//                         halt = 1;
-//                         break;
-//                     }
-//                 }
-//                 if(halt) break;
-//             }
-//             if(!halt) return 0;
-//         }
-//         nK += n;
-//         pK += p;
-//     }
-    return 1;
 }
 
 int fixed_n_p_powerfree(int str[], int sLen, int n, int p){
@@ -67,6 +33,16 @@ int fixed_n_p_powerfree(int str[], int sLen, int n, int p){
     return 1;
 }
 
+// assume finite length
+// n is length of factor, p is length of period
+// testing n/p+ power is essentially testing for n+1/p?????????????????
+int n_p_powerfree(int str[], int sLen, int n, int p, int plus){
+    // for(int x = 1; x * n <= sLen; )
+    for(int x = 1; ceiling(x * n, p) <= sLen; x++){
+        if(!fixed_n_p_powerfree(str, sLen, ceiling(x * n, p), x)) return 0;
+    }
+    return 1;
+}
 
 
 
@@ -139,9 +115,6 @@ int avoid_yxyprimex(int str[], int sLen, int yLen, int xLen){
     }
     return 1;
 }
-
-// round up a divided by b
-int ceiling(int a, int b){ return (a+b-1)/b; }
 
 // concatenate s2 to the end of s1, result is s1s2
 void concat(int s1[], int s1Len, int s2[], int s2Len, int s1s2[s1Len + s2Len]){
@@ -321,15 +294,17 @@ void vtm_build(int vtm[], int vtmLen){
 int main(){
     // int s[] = {2, 1, 2, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3};
     // int s[] = {1, 2, 3, 4, 1, 2, 3, 4, 1, 2};
-    // int s[] = {0, 0, 1, 0, 0, 1, 0, 0, 1};
-    int s[] = {0, 0, 1, 1, 1, 0, 0, 0, 1};
+    int s[] = {0, 0, 1, 0, 0, 1, 0, 0, 1};
+    // int s[] = {0, 0, 1, 1, 1, 0, 0, 0, 1};
     int sLen = 9;
     int n = 3; 
     int p = 1;
     // given 001001001 and 3/1 power, fixed..() should give 1
     // given 001110001 and 3/1 power, fixed..() should give 0
-    printf("is the string %d/%d-powerfree? %d\n", n, p, fixed_n_p_powerfree(s, sLen, n, p));
-
+    // printf("is the string %d/%d-powerfree? %d\n", n, p, fixed_n_p_powerfree(s, sLen, n, p));
+    // given 001001001 and 3/1 power, fixed..() should give 0
+    // given 001110001 and 3/1 power, fixed..() should give 0
+    printf("is the string %d/%d-powerfree? %d\n", n, p, n_p_powerfree(s, sLen, n, p));
 
 
 
