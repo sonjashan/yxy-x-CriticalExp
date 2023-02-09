@@ -33,13 +33,11 @@ int fixed_n_p_powerfree(int str[], int sLen, int n, int p){
     return 1;
 }
 
-// assume finite length
-// n is length of factor, p is length of period
-// testing n/p+ power is essentially testing for n+1/p?????????????????
+// finite length string, n is length of factor, p is length of period
 int n_p_powerfree(int str[], int sLen, int n, int p, int plus){
-    // for(int x = 1; x * n <= sLen; )
-    for(int x = 1; ceiling(x * n, p) <= sLen; x++){
-        if(!fixed_n_p_powerfree(str, sLen, ceiling(x * n, p), x)) return 0;
+    // x is each period length
+    for(int x = 1; ceiling(x * n + plus, p) <= sLen; x++){
+        if(!fixed_n_p_powerfree(str, sLen, ceiling(x * n + plus, p), x)) return 0;
     }
     return 1;
 }
@@ -304,7 +302,7 @@ int main(){
     // printf("is the string %d/%d-powerfree? %d\n", n, p, fixed_n_p_powerfree(s, sLen, n, p));
     // given 001001001 and 3/1 power, fixed..() should give 0
     // given 001110001 and 3/1 power, fixed..() should give 0
-    printf("is the string %d/%d-powerfree? %d\n", n, p, n_p_powerfree(s, sLen, n, p));
+    printf("is the string %d/%d-powerfree? %d\n", n, p, n_p_powerfree(s, sLen, n, p, 1));
 
 
 
