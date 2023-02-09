@@ -294,7 +294,7 @@ void vtm_build(int vtm[], int vtmLen){
 }
 
 int main(){
-    static int vtmLen = 20;
+    static int vtmLen = 100;
     int vtm[vtmLen];
     vtm_build(vtm, vtmLen);
 
@@ -303,7 +303,7 @@ int main(){
     int n = 5;
     int p = 2;
     int plus = 1;
-    int ltrMLen = 30;
+    int ltrMLen = 20;
 
     int res = backtrack_search(vtm, vtmLen, yLen, xLen, n, p, plus, ltrMLen);
     printf("backtrack search found result? %d\n", res);
