@@ -214,34 +214,16 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
             backtrack = 0;
             extend = 1;
 
-            int skip = 0;
-            int h0Len;
-            int * h0;
-            int * h1;
-            int * h2;
-            if(paLen == pbLen && pbLen == pcLen){
-                if(saLen == sbLen && sbLen == scLen){
-                    h0Len = paLen + saLen;
-                    
-                    int ha[h0Len]; 
-                    concat(pa, paLen, sa, saLen, ha);
-                    h0 = &ha;
-                    
-                    int hb[h0Len]; 
-                    concat(pb, pbLen, sb, sbLen, hb);
-                    h1 = &hb;
-                    
-                    int hc[h0Len]; 
-                    concat(pc, pcLen, sc, scLen, hc);
-                    h2 = &hc;
-                }
-                h0Len = paLen;
-                h0 = &pa;
-                h1 = &pb;
-                h2 = &pc;
-            } else skip = 1;
+            // Walnut can only deal with uniform morphisms
+            if(hLen % 3 == 0){
+                int h0Len = paLen + saLen;
+                int h0[h0Len]; 
+                int h1[h0Len]; 
+                int h2[h0Len]; 
+                concat(pa, paLen, sa, saLen, h0);
+                concat(pb, pbLen, sb, sbLen, h1);
+                concat(pc, pcLen, sc, scLen, h2);
 
-            if(!skip){
                 int postMorphLen = h0Len * preLen;
                 int postMorph[postMorphLen];
                 apply_tern_morph(pre, preLen, h0, h0Len, h1, h0Len, h2, h0Len, postMorph);
@@ -257,7 +239,7 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
                     printIntArray(h2, h0Len, 0);
                     return 1;
 
-                } else if(i >= mLen - 1){
+                } else if(i == mLen - 1){
                     extend = 0;
                     backtrack = 1;
                 }
