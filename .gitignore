@@ -5,4 +5,4 @@ powerfree.dSYM/Contents/Info.plist
 .DS_Store
 TMpowerfree
 .vscode/launch.json
-.vscode/settings.json
+.vscode/*.json
