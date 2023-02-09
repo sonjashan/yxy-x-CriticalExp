@@ -11,42 +11,65 @@ void printIntArray(int arr[], int arrSize, int space){
     printf("\n");
 }
 
-// only accurate if n/p is irreducible
-// assume finite length
-// n is length of factor, p is length of period
-// testing n/p+ power is essentially testing for n+1/p
-int n_p_powerfree(int str[], int sLen, int n, int p, int plus){
-    // like n * k where k is 1, 2, ... 
-    int nK = n;
-    int pK = p;
-    while(nK <= sLen){
-        // for each letter in str
-        for(int i = 0; i <= sLen - (nK + plus); i++){
-            int halt = 0;
-            // for each letter in period
-            for(int j=0; j < pK; j++){
-                for(int step = pK; j + step < (nK + plus); step += pK){
-                    // printf("n = %d\n", nK);
-                    // printf("p = %d\n", pK);
-                    // printf("i = %d\n", i);
-                    // printf("j = %d\n", j);
-                    // printf("step = %d\n", step);
-                    // printf("--------------\n");
+// // only accurate if n/p is irreducible
+// // assume finite length
+// // n is length of factor, p is length of period
+// // testing n/p+ power is essentially testing for n+1/p
+// int n_p_powerfree(int str[], int sLen, int n, int p, int plus){
+//     // like n * k where k is 1, 2, ... 
+//     int nK = n;
+//     int pK = p;
+//     while(nK <= sLen){
+//         // for each letter in str
+//         for(int i = 0; i <= sLen - (nK + plus); i++){
+//             int halt = 0;
+//             // for each letter in period
+//             for(int j=0; j < pK; j++){
+//                 for(int step = pK; j + step < (nK + plus); step += pK){
+//                     // printf("n = %d\n", nK);
+//                     // printf("p = %d\n", pK);
+//                     // printf("i = %d\n", i);
+//                     // printf("j = %d\n", j);
+//                     // printf("step = %d\n", step);
+//                     // printf("--------------\n");
 
-                    if(str[i + j] != str[i + j + step]){
-                        halt = 1;
-                        break;
-                    }
+//                     if(str[i + j] != str[i + j + step]){
+//                         halt = 1;
+//                         break;
+//                     }
+//                 }
+//                 if(halt) break;
+//             }
+//             if(!halt) return 0;
+//         }
+//         nK += n;
+//         pK += p;
+//     }
+//     return 1;
+// }
+
+int fixed_n_p_powerfree(int str[], int sLen, int n, int p){
+    // for each letter in str
+    for(int i = 0; i <= sLen - n; i++){
+        int halt = 0;
+        // for each letter in period
+        for(int j = 0; j < p; j++){
+            for(int step = p; j + step < n; step += p){
+                if(str[i + j] != str[i + j + step]){
+                    halt = 1;
+                    break;
                 }
-                if(halt) break;
             }
-            if(!halt) return 0;
+            if(halt) break;
         }
-        nK += n;
-        pK += p;
+        if(!halt) return 0;
     }
     return 1;
 }
+
+
+
+
 
 // // assume h0 and h1 are the same length
 // void apply_bin_morph(int pre[], int preLen, int h0[], int h1[], int h0Len, int res[preLen * h0Len]){
