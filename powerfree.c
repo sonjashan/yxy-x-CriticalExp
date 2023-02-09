@@ -42,9 +42,6 @@ int n_p_powerfree(int str[], int sLen, int n, int p, int plus){
     return 1;
 }
 
-
-
-
 // // assume h0 and h1 are the same length
 // void apply_bin_morph(int pre[], int preLen, int h0[], int h1[], int h0Len, int res[preLen * h0Len]){
 //     for(int i = 0; i < preLen; i++){
@@ -290,37 +287,19 @@ void vtm_build(int vtm[], int vtmLen){
 }
 
 int main(){
-    // int s[] = {2, 1, 2, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3};
-    // int s[] = {1, 2, 3, 4, 1, 2, 3, 4, 1, 2};
-    int s[] = {0, 0, 1, 0, 0, 1, 0, 0, 1};
-    // int s[] = {0, 0, 1, 1, 1, 0, 0, 0, 1};
-    int sLen = 9;
-    int n = 3; 
-    int p = 1;
-    // given 001001001 and 3/1 power, fixed..() should give 1
-    // given 001110001 and 3/1 power, fixed..() should give 0
-    // printf("is the string %d/%d-powerfree? %d\n", n, p, fixed_n_p_powerfree(s, sLen, n, p));
-    // given 001001001 and 3/1 power, fixed..() should give 0
-    // given 001110001 and 3/1 power, fixed..() should give 0
-    printf("is the string %d/%d-powerfree? %d\n", n, p, n_p_powerfree(s, sLen, n, p, 1));
+    static int vtmLen = 100;
+    int vtm[vtmLen];
+    vtm_build(vtm, vtmLen);
 
+    int yLen = 2;
+    int xLen = 2;
+    int n = 5;
+    int p = 2;
+    int plus = 1;
+    int ltrMLen = 20;
 
-
-
-
-    // static int vtmLen = 100;
-    // int vtm[vtmLen];
-    // vtm_build(vtm, vtmLen);
-
-    // int yLen = 2;
-    // int xLen = 2;
-    // int n = 5;
-    // int p = 2;
-    // int plus = 1;
-    // int ltrMLen = 20;
-
-    // int res = backtrack_search(vtm, vtmLen, yLen, xLen, n, p, plus, ltrMLen);
-    // printf("backtrack search found result? %d\n", res);
+    int res = backtrack_search(vtm, vtmLen, yLen, xLen, n, p, plus, ltrMLen);
+    printf("backtrack search found result? %d\n", res);
 
 
 
@@ -387,5 +366,17 @@ int main(){
     // int p = 1;
     // printf("is the string %d/%d-powerfree? %d\n", n, p, n_p_powerfree(s, sLen, n, p, 0));
     // printf("is the string %d/%d+-powerfree? %d\n", n, p, n_p_powerfree(s, sLen, n, p, 1));
+
+    // // int s[] = {2, 1, 2, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3};
+    // // int s[] = {1, 2, 3, 4, 1, 2, 3, 4, 1, 2};
+    // int s[] = {0, 0, 1, 0, 0, 1, 0, 0, 1};
+    // // int s[] = {0, 0, 1, 1, 1, 0, 0, 0, 1};
+    // int sLen = 9;
+    // int n = 3; 
+    // int p = 1;
+    // // given 001001001 and 3/1 power, fixed..() should give 1
+    // // given 001110001 and 3/1 power, fixed..() should give 0
+    // // printf("is the string %d/%d-powerfree? %d\n", n, p, fixed_n_p_powerfree(s, sLen, n, p));
+    // printf("is the string %d/%d-powerfree? %d\n", n, p, n_p_powerfree(s, sLen, n, p, 1));
 }
 
