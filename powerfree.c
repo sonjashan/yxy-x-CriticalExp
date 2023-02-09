@@ -237,7 +237,9 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
                     printIntArray(h1, h0Len, 0);
                     printf("2->");
                     printIntArray(h2, h0Len, 0);
-                    return 1;
+                    extend = 0;
+                    backtrack = 1;
+                    // return 1;
 
                 } else if(i == mLen - 1){
                     extend = 0;
