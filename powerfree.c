@@ -165,21 +165,21 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
                 paIdx++;
                 paLen++;
             } else if(j % psCount == 1){
-                sa[saIdx] = morphism[j];
-                saIdx--;
-                saLen++;
-            } else if(j % psCount == 2){
                 pb[pbIdx] = morphism[j];
                 pbIdx++;
                 pbLen++;
-            } else if(j % psCount == 3){
-                sb[sbIdx] = morphism[j];
-                sbIdx--;
-                sbLen++;
-            } else if(j % psCount == 4){
+            } else if(j % psCount == 2){
                 pc[pcIdx] = morphism[j];
                 pcIdx++;
                 pcLen++;
+            } else if(j % psCount == 3){
+                sa[saIdx] = morphism[j];
+                saIdx--;
+                saLen++;
+            } else if(j % psCount == 4){
+                sb[sbIdx] = morphism[j];
+                sbIdx--;
+                sbLen++;
             } else if(j % psCount == 5){
                 sc[scIdx] = morphism[j];
                 scIdx--;
