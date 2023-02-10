@@ -145,7 +145,7 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
     int pa[l], pb[l], pc[l], sa[l], sb[l], sc[l];       // pa is prefix of h(a)
     int ab[ltrMLen], ac[ltrMLen], ba[ltrMLen], bc[ltrMLen], ca[ltrMLen], cb[ltrMLen];       // suffix of a concatenated with prefix of b, etc.
 
-    int count = 0;
+    unsigned int count = 0;
     while(i < maxMLen){
         // printf("************************\n");
         // printf("morphism: ");
@@ -324,7 +324,7 @@ void vtm_build(int vtm[], int vtmLen){
 }
 
 int main(){
-    static int vtmLen = 100;
+    static int vtmLen = 20;
     int vtm[vtmLen];
     vtm_build(vtm, vtmLen);
 
@@ -333,7 +333,7 @@ int main(){
     int n = 5;
     int p = 2;
     int plus = 1;
-    int ltrMLen = 20;
+    int ltrMLen = 30;
 
     int res = backtrack_search(vtm, vtmLen, yLen, xLen, n, p, plus, ltrMLen);
     printf("backtrack search found result? %d\n", res);
