@@ -142,12 +142,13 @@ void reverse(int str[], int sLen){
 // this is DFS!
 // for pre morphism sequences from 3 letter alphabets like vtm
 // xLen and yLen are the min length as in avoid_yxyprime()
-// mLen is the max length of morphisms we are looking for
+// ltrMLen is the max |h(0)| of the morphism we are looking for
 // return 0 not found, 1 found, -1 error
 int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, int plus, int ltrMLen){
     int psCount = 6;            // vtm uses a 3 letter alphabet and h of a, b, c each has a pre- and suffixes
-    int mLen = ltrMLen * 3;     // morphism is an array that includes h(0), h(1), and h(2), see prefix suffix search.pdf
-    int morphism[mLen];
+
+    int maxMLen = ltrMLen * 3;     // morphism is an array that includes h(0), h(1), and h(2), see prefix suffix search.pdf
+    int morphism[maxMLen];
     int i = 0; 
     morphism[i] = 0;
 
@@ -156,7 +157,7 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
     int ab[ltrMLen], ac[ltrMLen], ba[ltrMLen], bc[ltrMLen], ca[ltrMLen], cb[ltrMLen];       // suffix of a concatenated with prefix of b, etc.
 
     int count = 0;
-    while(i < mLen){
+    while(i < maxMLen){
 printf("************************\n");
 printf("morphism: ");
 printIntArray(morphism, i + 1, 0);
@@ -262,7 +263,7 @@ printIntArray(morphism, i + 1, 0);
                     backtrack = 1;
                     // return 1;
 
-                } else if(i == mLen - 1){
+                } else if(i == maxMLen - 1){
                     extend = 0;
                     backtrack = 1;
                 }
@@ -271,7 +272,7 @@ printIntArray(morphism, i + 1, 0);
         if(extend){
  printf("EXTEND\n");
             // check for i above 
-            // if we are here, i < mLen - 1
+            // if we are here, i < maxMLen - 1
             i++; 
             morphism[i] = 0;
         } 
@@ -289,7 +290,7 @@ printIntArray(morphism, i + 1, 0);
         count++;
         if(count % 10000 == 0) printf("checked %d potential sequences\n", count);
     }
-    printf("ERROR: i should never >= mLen, as i only advance in if(extend)\n");
+    printf("ERROR: i should never >= maxMLen, as i only advance in if(extend)\n");
     return -1;
 }
 
