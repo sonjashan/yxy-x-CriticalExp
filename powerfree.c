@@ -102,8 +102,7 @@ int fixed_len_avoid_yxyprimex(int str[], int sLen, int yLen, int xLen){
     return 1;
 }
 
-// str is binary
-// xLen and yLen are the min length
+// str is binary, xLen and yLen are the min length
 int avoid_yxyprimex(int str[], int sLen, int yLen, int xLen){
     for(int i = yLen; (i + xLen) * 2 <= sLen; i++){
         for(int j = xLen; (i + j) * 2 <= sLen; j++){
@@ -129,7 +128,7 @@ void reverse(int str[], int sLen){
     }
 }
 
-// this is DFS!
+// this is DFS
 // for pre morphism sequences from 3 letter alphabets like vtm
 // xLen and yLen are the min length as in avoid_yxyprime()
 // ltrMLen is the max |h(0)| of the morphism we are looking for
@@ -158,7 +157,7 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
         int paIdx = 0, pbIdx = 0, pcIdx = 0, saIdx = 0, sbIdx = 0, scIdx = 0;
         int paLen = 0, pbLen = 0, pcLen = 0, saLen = 0, sbLen = 0, scLen = 0;       // need the precise length for use later
 
-        // psLen is at least 1/6 of hLen, so should not run out of space
+        // pa and such is at least 1/6 of maxMLen which is the max value of hLen, so should not run out of space
         for(int j = 0; j < hLen; j++){
             if(j % psCount == 0){
                 pa[paIdx] = morphism[j];
