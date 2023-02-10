@@ -206,6 +206,18 @@ printIntArray(morphism, i + 1, 0);
         reverse(sc, scLen);
 
 // printf("after loop sa[0] is %d\n", sa[0]);
+printf("before concat pa: ");
+printIntArray(pa, paLen, 0);
+printf("before concat pb: ");
+printIntArray(pb, pbLen, 0);
+printf("before concat pc: ");
+printIntArray(pc, pcLen, 0);
+printf("before concat sa: ");
+printIntArray(sa, saLen, 0);
+printf("before concat sb: ");
+printIntArray(sb, sbLen, 0);
+printf("before concat sc: ");
+printIntArray(sc, scLen, 0);
 
         // vtm is squarefree
         // int ab[saLen + pbLen], ac[saLen + pcLen], ba[sbLen + paLen], bc[sbLen + pcLen], ca[scLen + paLen], cb[scLen + pbLen];
@@ -218,6 +230,18 @@ printIntArray(morphism, i + 1, 0);
 
 // printf("sa: ");
 // printIntArray(sa, saLen, 0);
+printf("ab: ");
+printIntArray(ab, saLen + pbLen, 0);
+printf("ac: ");
+printIntArray(ac, saLen + pcLen, 0);
+printf("ba: ");
+printIntArray(ba, sbLen + paLen, 0);
+printf("bc: ");
+printIntArray(bc, sbLen + pcLen, 0);
+printf("ca: ");
+printIntArray(ca, scLen + paLen, 0);
+printf("cb: ");
+printIntArray(cb, scLen + pbLen, 0);
 
         if(avoid_yxyprimex(ab, saLen + pbLen, yLen, xLen) &&
         n_p_powerfree(ab, saLen + pbLen, n, p, plus) &&
