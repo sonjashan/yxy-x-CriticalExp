@@ -129,6 +129,16 @@ int max(int n1, int n2, int n3){
     return res;
 }
 
+void reverse(int str[], int sLen){
+    int tmp[sLen];
+    for(int i = 0; i < sLen; i++){
+        tmp[sLen - 1 - i] = str[i];
+    }
+    for(int i = 0; i < sLen; i++){
+        str[i] = tmp[i];
+    }
+}
+
 // this is DFS!
 // for pre morphism sequences from 3 letter alphabets like vtm
 // xLen and yLen are the min length as in avoid_yxyprime()
@@ -154,10 +164,7 @@ printIntArray(morphism, i + 1, 0);
         int backtrack = 1;
 
         int hLen = i + 1;                       // the morphism length so far
-        int psLen = ceiling(hLen, psCount);     // pre- or suffix max length = ceiling(hLen / psCount)
-        // int pa[psLen], pb[psLen], pc[psLen], sa[psLen], sb[psLen], sc[psLen];       // pa is prefix of h(a)
-        int paIdx = 0, pbIdx = 0, pcIdx = 0;
-        int saIdx = psLen - 1, sbIdx = psLen - 1, scIdx = psLen - 1;
+        int paIdx = 0, pbIdx = 0, pcIdx = 0, saIdx = 0, sbIdx = 0, scIdx = 0;
         int paLen = 0, pbLen = 0, pcLen = 0, saLen = 0, sbLen = 0, scLen = 0;       // need the precise length for use later
 
         // psLen is at least 1/6 of hLen, so should not run out of space
@@ -179,20 +186,25 @@ printIntArray(morphism, i + 1, 0);
                 sa[saIdx] = morphism[j];
 // printf("in loop sa[0] is %d\n", sa[0]);
 // printf("sa[%d] is %d\n", saIdx, sa[saIdx]);
-                saIdx--;
+                saIdx++;
                 saLen++;
             } else if(j % psCount == 4){
                 sb[sbIdx] = morphism[j];
-                sbIdx--;
+                sbIdx++;
                 sbLen++;
             } else if(j % psCount == 5){
                 sc[scIdx] = morphism[j];
-                scIdx--;
+                scIdx++;
                 scLen++;
             } else {
                 printf("ERROR: Did you change psCount without changing the loop that constructs the suffixes and predfixes?\n");
             }
         }
+        reverse(sa, saLen);
+        reverse(sb, sbLen);
+        reverse(sc, scLen);
+
+// printf("after loop sa[0] is %d\n", sa[0]);
 
         // vtm is squarefree
         // int ab[saLen + pbLen], ac[saLen + pcLen], ba[sbLen + paLen], bc[sbLen + pcLen], ca[scLen + paLen], cb[scLen + pbLen];
@@ -202,6 +214,9 @@ printIntArray(morphism, i + 1, 0);
         concat(sb, sbLen, pc, pcLen, bc);
         concat(sc, scLen, pa, paLen, ca);
         concat(sc, scLen, pb, pbLen, cb);
+
+// printf("sa: ");
+// printIntArray(sa, saLen, 0);
 
         if(avoid_yxyprimex(ab, saLen + pbLen, yLen, xLen) &&
         n_p_powerfree(ab, saLen + pbLen, n, p, plus) &&
