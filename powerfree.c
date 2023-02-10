@@ -39,6 +39,11 @@ int n_p_powerfree(int str[], int sLen, int n, int p, int plus){
     for(int x = 1; ceiling(x * n + plus, p) <= sLen; x++){
         if(!fixed_n_p_powerfree(str, sLen, ceiling(x * n + plus, p), x)) return 0;
     }
+// printf("-------------\n");
+// printf("yes %d/%d plus%d power free \n", n, p, plus);
+// printIntArray(str, sLen, 0);
+// printf("sLen %d\n", sLen);
+
     return 1;
 }
 
@@ -136,21 +141,28 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
     int i = 0; 
     morphism[i] = 0;
 
+    int l = ceiling(ltrMLen, 2);                        // pre- or suffix h(a) or h(0) max length
+    int pa[l], pb[l], pc[l], sa[l], sb[l], sc[l];       // pa is prefix of h(a)
+    int ab[ltrMLen], ac[ltrMLen], ba[ltrMLen], bc[ltrMLen], ca[ltrMLen], cb[ltrMLen];       // suffix of a concatenated with prefix of b, etc.
+
     int count = 0;
     while(i < mLen){
-        // printIntArray(morphism, i + 1, 0);
+printf("************************\n");
+printf("morphism: ");
+printIntArray(morphism, i + 1, 0);
         int extend = 0;
         int backtrack = 1;
 
         int hLen = i + 1;                       // the morphism length so far
         int psLen = ceiling(hLen, psCount);     // pre- or suffix max length = ceiling(hLen / psCount)
-        int pa[psLen], pb[psLen], pc[psLen], sa[psLen], sb[psLen], sc[psLen];       // pa is prefix of h(a)
+        // int pa[psLen], pb[psLen], pc[psLen], sa[psLen], sb[psLen], sc[psLen];       // pa is prefix of h(a)
         int paIdx = 0, pbIdx = 0, pcIdx = 0;
         int saIdx = psLen - 1, sbIdx = psLen - 1, scIdx = psLen - 1;
         int paLen = 0, pbLen = 0, pcLen = 0, saLen = 0, sbLen = 0, scLen = 0;       // need the precise length for use later
 
         // psLen is at least 1/6 of hLen, so should not run out of space
         for(int j = 0; j < hLen; j++){
+// printf("morphism[%d] is %d\n", j, morphism[j]);
             if(j % psCount == 0){
                 pa[paIdx] = morphism[j];
                 paIdx++;
@@ -165,6 +177,8 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
                 pcLen++;
             } else if(j % psCount == 3){
                 sa[saIdx] = morphism[j];
+// printf("in loop sa[0] is %d\n", sa[0]);
+// printf("sa[%d] is %d\n", saIdx, sa[saIdx]);
                 saIdx--;
                 saLen++;
             } else if(j % psCount == 4){
@@ -181,7 +195,7 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
         }
 
         // vtm is squarefree
-        int ab[saLen + pbLen], ac[saLen + pcLen], ba[sbLen + paLen], bc[sbLen + pcLen], ca[scLen + paLen], cb[scLen + pbLen];
+        // int ab[saLen + pbLen], ac[saLen + pcLen], ba[sbLen + paLen], bc[sbLen + pcLen], ca[scLen + paLen], cb[scLen + pbLen];
         concat(sa, saLen, pb, pbLen, ab);
         concat(sa, saLen, pc, pcLen, ac);
         concat(sb, sbLen, pa, paLen, ba);
@@ -201,7 +215,8 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
         n_p_powerfree(ca, scLen + paLen, n, p, plus) &&
         avoid_yxyprimex(cb, scLen + pbLen, yLen, xLen) &&
         n_p_powerfree(cb, scLen + pbLen, n, p, plus)){
-
+// printf("************************\n");
+// printf("hLen %d\n", hLen);
             backtrack = 0;
             extend = 1;
 
@@ -239,12 +254,14 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
             }
         }        
         if(extend){
+ printf("EXTEND\n");
             // check for i above 
             // if we are here, i < mLen - 1
             i++; 
             morphism[i] = 0;
         } 
         if(backtrack){
+ printf("BACKTRACK\n");
             if(morphism[i] == 0) morphism[i] = 1;
             else { 
                 while(morphism[i] == 1){
