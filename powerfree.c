@@ -28,7 +28,11 @@ int fixed_n_p_powerfree(int str[], int sLen, int n, int p){
             }
             if(halt) break;
         }
-        if(!halt) return 0;
+        if(!halt){
+printf("%d/%d power found at index %d: ", n, p, i);
+printIntArray(str, sLen, 0);
+            return 0;
+        }
     }
     return 1;
 }
@@ -95,7 +99,8 @@ int fixed_len_avoid_yxyprimex(int str[], int sLen, int yLen, int xLen){
             }
         }
         if(!halt){
-            // printf("i = %d\n", i);
+printf("yxy\'x, ylen = %d, xlen = %d, found at index %d: ", yLen, xLen, i);
+printIntArray(str, sLen, 0);
             return 0;
         }
     }
