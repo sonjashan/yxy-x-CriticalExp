@@ -29,8 +29,8 @@ int fixed_n_p_powerfree(int str[], int sLen, int n, int p){
             if(halt) break;
         }
         if(!halt){
-printf("%d/%d power found at index %d: ", n, p, i);
-printIntArray(str, sLen, 0);
+        // printf("%d/%d power found at index %d: ", n, p, i);
+        // printIntArray(str, sLen, 0);
             return 0;
         }
     }
@@ -43,11 +43,6 @@ int n_p_powerfree(int str[], int sLen, int n, int p, int plus){
     for(int x = 1; ceiling(x * n + plus, p) <= sLen; x++){
         if(!fixed_n_p_powerfree(str, sLen, ceiling(x * n + plus, p), x)) return 0;
     }
-// printf("-------------\n");
-// printf("yes %d/%d plus%d power free \n", n, p, plus);
-// printIntArray(str, sLen, 0);
-// printf("sLen %d\n", sLen);
-
     return 1;
 }
 
@@ -99,8 +94,8 @@ int fixed_len_avoid_yxyprimex(int str[], int sLen, int yLen, int xLen){
             }
         }
         if(!halt){
-printf("yxy\'x, ylen = %d, xlen = %d, found at index %d: ", yLen, xLen, i);
-printIntArray(str, sLen, 0);
+        // printf("yxy\'x, ylen = %d, xlen = %d, found at index %d: ", yLen, xLen, i);
+        // printIntArray(str, sLen, 0);
             return 0;
         }
     }
@@ -112,9 +107,6 @@ printIntArray(str, sLen, 0);
 int avoid_yxyprimex(int str[], int sLen, int yLen, int xLen){
     for(int i = yLen; (i + xLen) * 2 <= sLen; i++){
         for(int j = xLen; (i + j) * 2 <= sLen; j++){
-            // printf("i = %d\n", i);
-            // printf("j = %d\n", j);
-            // printf("--------------\n");
             if(!fixed_len_avoid_yxyprimex(str, sLen, i, j)) return 0;
         }
     }
@@ -125,13 +117,6 @@ int avoid_yxyprimex(int str[], int sLen, int yLen, int xLen){
 void concat(int s1[], int s1Len, int s2[], int s2Len, int s1s2[s1Len + s2Len]){
     for(int i = 0; i < s1Len; i++) s1s2[i] = s1[i];
     for(int i = 0; i < s2Len; i++) s1s2[i + s1Len] = s2[i];    
-}
-
-int max(int n1, int n2, int n3){
-    int res = n1;
-    if(n2 > res) res = n2;
-    if(n3 > res) res = n3;
-    return res;
 }
 
 void reverse(int str[], int sLen){
@@ -163,9 +148,9 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
 
     int count = 0;
     while(i < maxMLen){
-printf("************************\n");
-printf("morphism: ");
-printIntArray(morphism, i + 1, 0);
+        // printf("************************\n");
+        // printf("morphism: ");
+        // printIntArray(morphism, i + 1, 0);
         int extend = 0;
         int backtrack = 1;
 
@@ -175,7 +160,6 @@ printIntArray(morphism, i + 1, 0);
 
         // psLen is at least 1/6 of hLen, so should not run out of space
         for(int j = 0; j < hLen; j++){
-// printf("morphism[%d] is %d\n", j, morphism[j]);
             if(j % psCount == 0){
                 pa[paIdx] = morphism[j];
                 paIdx++;
@@ -190,8 +174,6 @@ printIntArray(morphism, i + 1, 0);
                 pcLen++;
             } else if(j % psCount == 3){
                 sa[saIdx] = morphism[j];
-// printf("in loop sa[0] is %d\n", sa[0]);
-// printf("sa[%d] is %d\n", saIdx, sa[saIdx]);
                 saIdx++;
                 saLen++;
             } else if(j % psCount == 4){
@@ -210,22 +192,20 @@ printIntArray(morphism, i + 1, 0);
         reverse(sb, sbLen);
         reverse(sc, scLen);
 
-// printf("after loop sa[0] is %d\n", sa[0]);
-printf("before concat pa: ");
-printIntArray(pa, paLen, 0);
-printf("before concat pb: ");
-printIntArray(pb, pbLen, 0);
-printf("before concat pc: ");
-printIntArray(pc, pcLen, 0);
-printf("before concat sa: ");
-printIntArray(sa, saLen, 0);
-printf("before concat sb: ");
-printIntArray(sb, sbLen, 0);
-printf("before concat sc: ");
-printIntArray(sc, scLen, 0);
+        // printf("before concat pa: ");
+        // printIntArray(pa, paLen, 0);
+        // printf("before concat pb: ");
+        // printIntArray(pb, pbLen, 0);
+        // printf("before concat pc: ");
+        // printIntArray(pc, pcLen, 0);
+        // printf("before concat sa: ");
+        // printIntArray(sa, saLen, 0);
+        // printf("before concat sb: ");
+        // printIntArray(sb, sbLen, 0);
+        // printf("before concat sc: ");
+        // printIntArray(sc, scLen, 0);
 
         // vtm is squarefree
-        // int ab[saLen + pbLen], ac[saLen + pcLen], ba[sbLen + paLen], bc[sbLen + pcLen], ca[scLen + paLen], cb[scLen + pbLen];
         concat(sa, saLen, pb, pbLen, ab);
         concat(sa, saLen, pc, pcLen, ac);
         concat(sb, sbLen, pa, paLen, ba);
@@ -233,20 +213,18 @@ printIntArray(sc, scLen, 0);
         concat(sc, scLen, pa, paLen, ca);
         concat(sc, scLen, pb, pbLen, cb);
 
-// printf("sa: ");
-// printIntArray(sa, saLen, 0);
-printf("ab: ");
-printIntArray(ab, saLen + pbLen, 0);
-printf("ac: ");
-printIntArray(ac, saLen + pcLen, 0);
-printf("ba: ");
-printIntArray(ba, sbLen + paLen, 0);
-printf("bc: ");
-printIntArray(bc, sbLen + pcLen, 0);
-printf("ca: ");
-printIntArray(ca, scLen + paLen, 0);
-printf("cb: ");
-printIntArray(cb, scLen + pbLen, 0);
+        // printf("ab: ");
+        // printIntArray(ab, saLen + pbLen, 0);
+        // printf("ac: ");
+        // printIntArray(ac, saLen + pcLen, 0);
+        // printf("ba: ");
+        // printIntArray(ba, sbLen + paLen, 0);
+        // printf("bc: ");
+        // printIntArray(bc, sbLen + pcLen, 0);
+        // printf("ca: ");
+        // printIntArray(ca, scLen + paLen, 0);
+        // printf("cb: ");
+        // printIntArray(cb, scLen + pbLen, 0);
 
         if(avoid_yxyprimex(ab, saLen + pbLen, yLen, xLen) &&
         n_p_powerfree(ab, saLen + pbLen, n, p, plus) &&
@@ -260,8 +238,6 @@ printIntArray(cb, scLen + pbLen, 0);
         n_p_powerfree(ca, scLen + paLen, n, p, plus) &&
         avoid_yxyprimex(cb, scLen + pbLen, yLen, xLen) &&
         n_p_powerfree(cb, scLen + pbLen, n, p, plus)){
-// printf("************************\n");
-// printf("hLen %d\n", hLen);
             backtrack = 0;
             extend = 1;
 
@@ -299,14 +275,14 @@ printIntArray(cb, scLen + pbLen, 0);
             }
         }        
         if(extend){
- printf("EXTEND\n");
+            // printf("EXTEND\n");
             // check for i above 
             // if we are here, i < maxMLen - 1
             i++; 
             morphism[i] = 0;
         } 
         if(backtrack){
- printf("BACKTRACK\n");
+            // printf("BACKTRACK\n");
             if(morphism[i] == 0) morphism[i] = 1;
             else { 
                 while(morphism[i] == 1){
