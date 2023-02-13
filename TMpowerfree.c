@@ -15,6 +15,14 @@ void printIntArray(int arr[], int arrSize, int space){
     printf("\n");
 }
 
+void filePrintIntArray(FILE *fp, int arr[], int arrSize, int space){
+    for(int i = 0; i < arrSize; i++){
+        if(space) fprintf(fp, "%d  ", arr[i]);
+        else fprintf(fp, "%d", arr[i]);
+    }
+    fprintf(fp,"\n");
+}
+
 int fixed_n_p_powerfree(int str[], int sLen, int n, int p){
     // for each letter in str
     for(int i = 0; i <= sLen - n; i++){
@@ -125,6 +133,11 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
     unsigned int count = 0;
     time_t start, now;
     start = time(NULL);
+    FILE *fp;
+    fp = fopen("TMyxyprimex.txt", "a");   // could add checks for error opening file
+    fprintf(fp, "ltrMLen: %d\n", ltrMLen);
+    fclose(fp);
+
     while(i < maxMLen){
         // printf("************************\n");
         // printf("morphism: ");
@@ -207,13 +220,16 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
                 if(avoid_yxyprimex(postMorph, postMorphLen, yLen, xLen) &&
                 n_p_powerfree(postMorph, postMorphLen, n, p, plus)){
 
-                    printf("0->");
-                    printIntArray(h0, h0Len, 0);
-                    printf("1->");
-                    printIntArray(h1, h0Len, 0);
-                    extend = 0;
-                    backtrack = 1;
-                    // return 1;
+                    fp = fopen("TMyxyprimex.txt", "a");   // could add checks for error opening file
+                    fprintf(fp, "0->");
+                    filePrintIntArray(fp, h0, h0Len, 0);
+                    fprintf(fp, "1->");
+                    filePrintIntArray(fp, h1, h0Len, 0);
+                    fclose(fp);
+                    
+                    // extend = 0;
+                    // backtrack = 1;
+                    return 1;
 
                 } else if(i == maxMLen - 1){
                     extend = 0;
@@ -242,7 +258,9 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
         count++;
         if(count % 10000 == 0){
             now = time(NULL);
-            printf("checked %d potential sequences in %ld seconds\n", count, now - start);
+            fp = fopen("TMyxyprimex.txt", "a");   // could add checks for error opening file
+            fprintf(fp, "checked %d potential sequences in %ld seconds\n", count, now - start);
+            fclose(fp);
         }
     }
     printf("ERROR: i should never >= maxMLen, as i only advance in if(extend)\n");
@@ -263,12 +281,10 @@ int main(){
     int p = 5;
     int plus = 1;
     int ltrMLen = 30;
-    printf("ltrMLen: %d\n", ltrMLen);
     int res = backtrack_search(tm, tmLen, yLen, xLen, n, p, plus, ltrMLen);
 
     while(res == 0){
         ltrMLen += 5;
-        printf("ltrMLen: %d\n", ltrMLen);
         res = backtrack_search(tm, tmLen, yLen, xLen, n, p, plus, ltrMLen);
     }
 
