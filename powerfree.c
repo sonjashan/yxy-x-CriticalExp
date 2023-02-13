@@ -40,6 +40,7 @@ int fixed_n_p_powerfree(int str[], int sLen, int n, int p){
 // finite length string, n is length of factor, p is length of period
 int n_p_powerfree(int str[], int sLen, int n, int p, int plus){
     // x is each period length
+    // n/p = the exponent, ceil((x * n + c) / p), c is 1 if plus
     for(int x = 1; ceiling(x * n + plus, p) <= sLen; x++){
         if(!fixed_n_p_powerfree(str, sLen, ceiling(x * n + plus, p), x)) return 0;
     }
@@ -331,10 +332,16 @@ int main(){
     int n = 5;
     int p = 2;
     int plus = 1;
-    int ltrMLen = 30;
-
+    int ltrMLen = 55;
+    printf("ltrMLen: %d\n", ltrMLen);
     int res = backtrack_search(vtm, vtmLen, yLen, xLen, n, p, plus, ltrMLen);
-    printf("backtrack search found result? %d\n", res);
+
+    while(res == 0){
+        ltrMLen += 5;
+        printf("ltrMLen: %d\n", ltrMLen);
+        res = backtrack_search(vtm, vtmLen, yLen, xLen, n, p, plus, ltrMLen);
+    }
+    // printf("backtrack search found result? %d\n", res);
 
 
 
