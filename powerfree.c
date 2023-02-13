@@ -150,6 +150,8 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
     unsigned int count = 0;
     time_t start, now;
     start = time(NULL);
+    printf("ltrMLen: %d\n", ltrMLen);
+
     while(i < maxMLen){
         // printf("************************\n");
         // printf("morphism: ");
@@ -339,12 +341,10 @@ int main(){
     int p = 2;
     int plus = 1;
     int ltrMLen = 55;
-    printf("ltrMLen: %d\n", ltrMLen);
     int res = backtrack_search(vtm, vtmLen, yLen, xLen, n, p, plus, ltrMLen);
 
     while(res == 0){
         ltrMLen += 5;
-        printf("ltrMLen: %d\n", ltrMLen);
         res = backtrack_search(vtm, vtmLen, yLen, xLen, n, p, plus, ltrMLen);
     }
     // printf("backtrack search found result? %d\n", res);
@@ -354,6 +354,10 @@ int main(){
 
 
 
+    // FILE *fp;
+    // fp = fopen("yxyprimexVTM.txt", "a");   // could add checks for error opening file
+    // fprintf(fp, "ltrMLen: %d\n", ltrMLen);
+    // fclose(fp);
 
     // int n1 = 411;
     // int n2 = 42;
