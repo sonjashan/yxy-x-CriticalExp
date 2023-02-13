@@ -110,7 +110,7 @@ void reverse(int str[], int sLen){
 // ltrMLen is the max |h(0)| of the morphism we are looking for
 // return 0 not found, 1 found, -1 error
 int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, int plus, int ltrMLen){
-    int psCount = 4;            // vtm uses a 3 letter alphabet and h of a, b, c each has a pre- and suffixes
+    int psCount = 4;            // tm uses a 2 letter alphabet and h of a, b each has a pre- and suffix
 
     int maxMLen = ltrMLen * 2;     // morphism is an array that includes h(0), h(1), see prefix suffix search.pdf
     int morphism[maxMLen];
