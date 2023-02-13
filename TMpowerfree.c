@@ -56,31 +56,6 @@ void apply_bin_morph(int pre[], int preLen, int h0[], int h1[], int h0Len, int r
     }
 }
 
-// // no restriction on whether h0, h1, h2 lengths are the same
-// // make sure res is large enough
-// int apply_tern_morph(int pre[], int preLen, int h0[], int h0Len, int h1[], int h1Len, int h2[], int h2Len, int res[]){
-//     int resIdx = 0;
-//     for(int i = 0; i < preLen; i++){
-//         if(pre[i] == 0){
-//             for(int j = 0; j < h0Len; j++){
-//                 res[resIdx] = h0[j];
-//                 resIdx++;
-//             }
-//         } else if(pre[i] == 1){
-//             for(int j = 0; j < h1Len; j++){
-//                 res[resIdx] = h1[j];
-//                 resIdx++;
-//             } 
-//         } else {
-//             for(int j = 0; j < h2Len; j++){
-//                 res[resIdx] = h2[j];
-//                 resIdx++;
-//             }
-//         }
-//     }
-//     return resIdx;
-// }
-
 int fixed_len_avoid_yxyprimex(int str[], int sLen, int yLen, int xLen){
     for(int i = 0; i <= sLen - (yLen + xLen) * 2; i++){
         int halt = 0;
@@ -268,31 +243,6 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
     return -1;
 }
 
-void vtm_build(int vtm[], int vtmLen){
-    vtm[0] = 2;
-    int source = 0;
-    int p = 0;
-    while(p < vtmLen){
-        if(vtm[source] == 0){
-            vtm[p] = 1;
-            p++;
-        } else if(vtm[source] == 1){
-            vtm[p] = 2;
-            p++; if(p == vtmLen) break;
-            vtm[p] = 0;
-            p++;
-        } else {
-            vtm[p] = 2;
-            p++; if(p == vtmLen) break;
-            vtm[p] = 1;
-            p++; if(p == vtmLen) break;
-            vtm[p] = 0;
-            p++;
-        }
-        source++;
-    }
-}
-
 int main(){
     // build TM
     static int tmLen = 60;
@@ -316,10 +266,6 @@ int main(){
 
 
 
-
-    // static int vtmLen = 20;
-    // int vtm[vtmLen];
-    // vtm_build(vtm, vtmLen);
 
     // int n1 = 411;
     // int n2 = 42;
