@@ -277,8 +277,8 @@ int main(){
 
     int yLen = 2;
     int xLen = 2;
-    int n = 13;
-    int p = 5;
+    int n = 5;
+    int p = 2;
     int plus = 1;
     int ltrMLen = 30;
     int res = backtrack_search(tm, tmLen, yLen, xLen, n, p, plus, ltrMLen);
