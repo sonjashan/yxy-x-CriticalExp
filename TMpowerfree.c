@@ -106,7 +106,7 @@ void reverse(int str[], int sLen){
 }
 
 // this is DFS
-// for pre morphism sequences from 3 letter alphabets like vtm
+// for pre morphism sequences from 2 letter alphabets like TM
 // xLen and yLen are the min length as in avoid_yxyprime()
 // ltrMLen is the max |h(0)| of the morphism we are looking for
 // return 0 not found, 1 found, -1 error
@@ -264,9 +264,15 @@ int main(){
     int plus = 1;
     int ltrMLen = 30;
     printf("ltrMLen: %d\n", ltrMLen);
-
     int res = backtrack_search(tm, tmLen, yLen, xLen, n, p, plus, ltrMLen);
-    printf("backtrack search found result? %d\n", res);
+
+    while(res == 0){
+        ltrMLen += 5;
+        printf("ltrMLen: %d\n", ltrMLen);
+        res = backtrack_search(tm, tmLen, yLen, xLen, n, p, plus, ltrMLen);
+    }
+
+
 
 
 
