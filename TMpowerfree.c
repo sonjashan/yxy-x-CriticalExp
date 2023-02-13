@@ -2,6 +2,7 @@
 
 #include<stdio.h>
 #include<stdlib.h>
+#include<time.h>
 
 // round up a divided by b
 int ceiling(int a, int b){ return (a+b-1)/b; }
@@ -122,6 +123,8 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
     int ab[ltrMLen], ba[ltrMLen], aa[ltrMLen], bb[ltrMLen];       // suffix of a concatenated with prefix of b, etc.
 
     unsigned int count = 0;
+    time_t start, now;
+    start = time(NULL);
     while(i < maxMLen){
         // printf("************************\n");
         // printf("morphism: ");
@@ -237,7 +240,10 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
             }
         }
         count++;
-        if(count % 10000 == 0) printf("checked %d potential sequences\n", count);
+        if(count % 10000 == 0){
+            now = time(NULL);
+            printf("checked %d potential sequences in %ld seconds\n", count, now - start);
+        }
     }
     printf("ERROR: i should never >= maxMLen, as i only advance in if(extend)\n");
     return -1;
