@@ -1,4 +1,4 @@
-// gcc -O3 -o powerfree powerfree.c
+// gcc -O3 -o DEJpowerfree DEJpowerfree.c
 
 #include<stdio.h>
 #include<stdlib.h>
@@ -56,17 +56,8 @@ int n_p_powerfree(int str[], int sLen, int n, int p, int plus){
     return 1;
 }
 
-// // assume h0 and h1 are the same length
-// void apply_bin_morph(int pre[], int preLen, int h0[], int h1[], int h0Len, int res[preLen * h0Len]){
-//     for(int i = 0; i < preLen; i++){
-//         for(int j = 0; j < h0Len; j++){
-//             res[i * h0Len + j] = (pre[i] == 0)? h0[j] : h1[j];
-//         }
-//     }
-// }
-
 // no restriction on whether h0, h1, h2 lengths are the same
-// make sure res is large enough
+// return h(pre), the length of res is decided by length of pre and h, make sure res is large enough
 int apply_tern_morph(int pre[], int preLen, int h0[], int h0Len, int h1[], int h1Len, int h2[], int h2Len, int res[]){
     int resIdx = 0;
     for(int i = 0; i < preLen; i++){
@@ -139,12 +130,12 @@ void reverse(int str[], int sLen){
 }
 
 // this is DFS
-// for pre morphism sequences from 3 letter alphabets like vtm
+// for pre morphism sequences from 3 letter alphabets like dej
 // xLen and yLen are the min length as in avoid_yxyprime()
 // ltrMLen is the max |h(0)| of the morphism we are looking for
 // return 0 not found, 1 found, -1 error
 int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, int plus, int ltrMLen){
-    int psCount = 6;            // vtm uses a 3 letter alphabet and h of a, b, c each has a pre- and suffixes
+    int psCount = 6;            // dej uses a 3 letter alphabet and h of a, b, c each has a pre- and suffixes
 
     int maxMLen = ltrMLen * 3;     // morphism is an array that includes h(0), h(1), and h(2), see prefix suffix search.pdf
     int morphism[maxMLen];
@@ -159,7 +150,7 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
     time_t start, now;
     start = time(NULL);
     FILE *fp;
-    fp = fopen("yxyprimexVTM.txt", "a");   // could add checks for error opening file
+    fp = fopen("DEJyxyprimex.txt", "a");   // could add checks for error opening file
     fprintf(fp, "ltrMLen: %d\n", ltrMLen);
     fclose(fp);
 
@@ -274,7 +265,7 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
                 if(avoid_yxyprimex(postMorph, postMorphLen, yLen, xLen) &&
                 n_p_powerfree(postMorph, postMorphLen, n, p, plus)){
 
-                    fp = fopen("yxyprimexVTM.txt", "a");   // could add checks for error opening file
+                    fp = fopen("DEJyxyprimex.txt", "a");   // could add checks for error opening file
                     fprintf(fp, "0->");
                     filePrintIntArray(fp, h0, h0Len, 0);
                     fprintf(fp, "1->");
@@ -311,7 +302,7 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
         count++;
         if(count % 1000000 == 0){
             now = time(NULL);
-            fp = fopen("yxyprimexVTM.txt", "a");   // could add checks for error opening file
+            fp = fopen("DEJyxyprimex.txt", "a");   // could add checks for error opening file
             fprintf(fp, "checked %d potential sequences in %ld seconds\n", count, now - start);
             fclose(fp);
         }
@@ -320,48 +311,52 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
     return -1;
 }
 
-void vtm_build(int vtm[], int vtmLen){
-    vtm[0] = 2;
+void ternary_seq_build(int startNum, int res[], int resLen, int h0[], int h0Len, int h1[], int h1Len, int h2[], int h2Len){
+    res[0] = startNum;
     int source = 0;
     int p = 0;
-    while(p < vtmLen){
-        if(vtm[source] == 0){
-            vtm[p] = 1;
-            p++;
-        } else if(vtm[source] == 1){
-            vtm[p] = 2;
-            p++; if(p == vtmLen) break;
-            vtm[p] = 0;
-            p++;
+    while(p < resLen){
+        if(res[source] == 0){
+            for(int j = 0; j < h0Len && p < resLen; j++){
+                res[p] = h0[j];
+                p++;
+            }
+        } else if(res[source] == 1){
+            for(int j = 0; j < h1Len && p < resLen; j++){
+                res[p] = h1[j];
+                p++;
+            }
         } else {
-            vtm[p] = 2;
-            p++; if(p == vtmLen) break;
-            vtm[p] = 1;
-            p++; if(p == vtmLen) break;
-            vtm[p] = 0;
-            p++;
+            for(int j = 0; j < h2Len && p < resLen; j++){
+                res[p] = h2[j];
+                p++;
+            }
         }
         source++;
     }
 }
 
 int main(){
-    static int vtmLen = 20;
+    static int vtmLen = 21;
     int vtm[vtmLen];
-    vtm_build(vtm, vtmLen);
+    int h0[] = {1};
+    int h1[] = {2, 0};
+    int h2[] = {2, 1, 0};
+    ternary_seq_build(2, vtm, vtmLen, h0, 1, h1, 2, h2, 3);
+    printIntArray(vtm, vtmLen, 0);
 
-    int yLen = 2;
-    int xLen = 2;
-    int n = 5;
-    int p = 2;
-    int plus = 1;
-    int ltrMLen = 55;
-    int res = backtrack_search(vtm, vtmLen, yLen, xLen, n, p, plus, ltrMLen);
+    // int yLen = 2;
+    // int xLen = 2;
+    // int n = 5;
+    // int p = 2;
+    // int plus = 1;
+    // int ltrMLen = 55;
+    // int res = backtrack_search(vtm, vtmLen, yLen, xLen, n, p, plus, ltrMLen);
 
-    while(res == 0){
-        ltrMLen += 5;
-        res = backtrack_search(vtm, vtmLen, yLen, xLen, n, p, plus, ltrMLen);
-    }
+    // while(res == 0){
+    //     ltrMLen += 5;
+    //     res = backtrack_search(vtm, vtmLen, yLen, xLen, n, p, plus, ltrMLen);
+    // }
     // printf("backtrack search found result? %d\n", res);
 
 
