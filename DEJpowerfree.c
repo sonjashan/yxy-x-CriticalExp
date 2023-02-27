@@ -212,7 +212,7 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
         // printf("before concat sc: ");
         // printIntArray(sc, scLen, 0);
 
-        // vtm is squarefree
+        // dej is 7/4+ power free
         concat(sa, saLen, pb, pbLen, ab);
         concat(sa, saLen, pc, pcLen, ac);
         concat(sb, sbLen, pa, paLen, ba);
@@ -300,7 +300,7 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
             }
         }
         count++;
-        if(count % 1000000 == 0){
+        if(count % 10000 == 0){
             now = time(NULL);
             fp = fopen("DEJyxyprimex.txt", "a");   // could add checks for error opening file
             fprintf(fp, "checked %d potential sequences in %ld seconds\n", count, now - start);
@@ -337,26 +337,29 @@ void ternary_seq_build(int startNum, int res[], int resLen, int h0[], int h0Len,
 }
 
 int main(){
-    static int vtmLen = 21;
-    int vtm[vtmLen];
-    int h0[] = {1};
-    int h1[] = {2, 0};
-    int h2[] = {2, 1, 0};
-    ternary_seq_build(2, vtm, vtmLen, h0, 1, h1, 2, h2, 3);
-    printIntArray(vtm, vtmLen, 0);
+    static int dejLen = 25;
+    int dej[dejLen];
+    int h0[] = {0, 1, 2, 0, 2, 1, 2, 0, 1, 2, 1, 0, 2, 1, 2, 0, 2, 1, 0};
+    int h1[] = {1, 2, 0, 1, 0, 2, 0, 1, 2, 0, 2, 1, 0, 2, 0, 1, 0, 2, 1};
+    int h2[] = {2, 0, 1, 2, 1, 0, 1, 2, 0, 1, 0, 2, 1, 0, 1, 2, 1, 0, 2};
+    int h0Len = 19;
+    int h1Len = 19;
+    int h2Len = 19;
+    ternary_seq_build(0, dej, dejLen, h0, h0Len, h1, h1Len, h2, h2Len);
+    // printIntArray(dej, dejLen, 0);
 
-    // int yLen = 2;
-    // int xLen = 2;
-    // int n = 5;
-    // int p = 2;
-    // int plus = 1;
-    // int ltrMLen = 55;
-    // int res = backtrack_search(vtm, vtmLen, yLen, xLen, n, p, plus, ltrMLen);
+    int yLen = 2;
+    int xLen = 2;
+    int n = 5;
+    int p = 2;
+    int plus = 1;
+    int ltrMLen = 30;
+    int res = backtrack_search(dej, dejLen, yLen, xLen, n, p, plus, ltrMLen);
 
-    // while(res == 0){
-    //     ltrMLen += 5;
-    //     res = backtrack_search(vtm, vtmLen, yLen, xLen, n, p, plus, ltrMLen);
-    // }
+    while(res == 0){
+        ltrMLen += 5;
+        res = backtrack_search(dej, dejLen, yLen, xLen, n, p, plus, ltrMLen);
+    }
     // printf("backtrack search found result? %d\n", res);
 
 
@@ -364,81 +367,12 @@ int main(){
 
 
 
-    // FILE *fp;
-    // fp = fopen("yxyprimexVTM.txt", "a");   // could add checks for error opening file
-    // fprintf(fp, "ltrMLen: %d\n", ltrMLen);
-    // fclose(fp);
-
-    // int n1 = 411;
-    // int n2 = 42;
-    // int n3 = -4;
-    // printf("max of %d, %d, and %d is %d\n", n1, n2, n3, max(n1, n2, n3));
-
-    // int s1[] = {};
-    // int s1Len = 0;
-    // int s2[] = {1,3,5,6,7};
-    // int s2Len = 5;
-    // int s1s2[s1Len + s2Len];
-    // concat(s1, s1Len, s2, s2Len,s1s2);
-    // printIntArray(s1s2, s1Len + s2Len, 1);
-
-    // printf("ceiling of %d/%d: %d\n", 3, 4, ceiling(3, 4));
-    // printf("ceiling of %d/%d: %d\n", 2, 1, ceiling(2, 1));
-
-    // printIntArray(vtm, vtmLen, 1);
-
-    // // build TM
-    // int tm[300] = {0, 1};
-    // for(int x = 2; x < 300; x++) tm[x] = x&1 ? !tm[x-1] : tm[x/2];
-    // // printIntArray(tm, 300);
-
-    // int pre[] = {2,1,0,2,0,1};
-    // int preLen = 6;
+    // static int vtmLen = 25;
+    // int vtm[vtmLen];
     // int h0[] = {1};
-    // int h0Len = 1;
     // int h1[] = {2, 0};
-    // int h1Len = 2;
     // int h2[] = {2, 1, 0};
-    // int h2Len = 3;
-    // int morphed[12];
-    // apply_tern_morph(pre, preLen, h0, h0Len, h1, h1Len, h2, h2Len, morphed);
-    // printIntArray(morphed, 12);
-
-
-    // int s[] = {0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1};
-    // int sLen = 14;
-    // printf("does the string avoid yxy'x? %d\n", fixed_len_avoid_yxyprimex(s, sLen, 3, 3));
-    // printf("does the string avoid yxy'x? %d\n", avoid_yxyprimex(s, sLen, 2, 2));
-    // avoid_yxyprimex(s, sLen, 2, 2);
-
-    // int pre[] = {0, 1, 1, 0};
-    // int preLen = 4; 
-    // int h0[] = {3, 4};
-    // int h1[] = {2, 6};
-    // int h0Len = 2;
-    // int morphed[preLen * h0Len];
-    // apply_bin_morph(pre, preLen, h0, h1, h0Len, morphed);
-    // printIntArray(morphed, preLen * h0Len);
-
-    // int s[] = {2, 1, 2, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3};
-    // // int s[] = {1, 2, 3, 4, 1, 2, 3, 4, 1, 2};
-    // int s[] = {0, 0, 1, 0, 0, 1, 0, 0, 1};
-    // int sLen = 9;
-    // int n = 3; 
-    // int p = 1;
-    // printf("is the string %d/%d-powerfree? %d\n", n, p, n_p_powerfree(s, sLen, n, p, 0));
-    // printf("is the string %d/%d+-powerfree? %d\n", n, p, n_p_powerfree(s, sLen, n, p, 1));
-
-    // // int s[] = {2, 1, 2, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3};
-    // // int s[] = {1, 2, 3, 4, 1, 2, 3, 4, 1, 2};
-    // int s[] = {0, 0, 1, 0, 0, 1, 0, 0, 1};
-    // // int s[] = {0, 0, 1, 1, 1, 0, 0, 0, 1};
-    // int sLen = 9;
-    // int n = 3; 
-    // int p = 1;
-    // // given 001001001 and 3/1 power, fixed..() should give 1
-    // // given 001110001 and 3/1 power, fixed..() should give 0
-    // // printf("is the string %d/%d-powerfree? %d\n", n, p, fixed_n_p_powerfree(s, sLen, n, p));
-    // printf("is the string %d/%d-powerfree? %d\n", n, p, n_p_powerfree(s, sLen, n, p, 1));
+    // ternary_seq_build(2, vtm, vtmLen, h0, 1, h1, 2, h2, 3);
+    // printIntArray(vtm, vtmLen, 0);
 }
 
