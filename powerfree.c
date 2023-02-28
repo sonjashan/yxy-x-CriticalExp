@@ -1,8 +1,9 @@
 // gcc -O3 -o powerfree powerfree.c
+// use the makefile
 
 #include<stdio.h>
 #include<stdlib.h>
-#include<time.h>
+#include "powerfree.h"
 
 // round up a divided by b
 int ceiling(int a, int b){ return (a+b-1)/b; }
@@ -56,14 +57,14 @@ int n_p_powerfree(int str[], int sLen, int n, int p, int plus){
     return 1;
 }
 
-// // assume h0 and h1 are the same length
-// void apply_bin_morph(int pre[], int preLen, int h0[], int h1[], int h0Len, int res[preLen * h0Len]){
-//     for(int i = 0; i < preLen; i++){
-//         for(int j = 0; j < h0Len; j++){
-//             res[i * h0Len + j] = (pre[i] == 0)? h0[j] : h1[j];
-//         }
-//     }
-// }
+// assume h0 and h1 are the same length
+void apply_bin_morph(int pre[], int preLen, int h0[], int h1[], int h0Len, int res[preLen * h0Len]){
+    for(int i = 0; i < preLen; i++){
+        for(int j = 0; j < h0Len; j++){
+            res[i * h0Len + j] = (pre[i] == 0)? h0[j] : h1[j];
+        }
+    }
+}
 
 // no restriction on whether h0, h1, h2 lengths are the same
 // make sure res is large enough
@@ -138,231 +139,7 @@ void reverse(int str[], int sLen){
     }
 }
 
-// this is DFS
-// for pre morphism sequences from 3 letter alphabets like vtm
-// xLen and yLen are the min length as in avoid_yxyprime()
-// ltrMLen is the max |h(0)| of the morphism we are looking for
-// return 0 not found, 1 found, -1 error
-int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, int plus, int ltrMLen){
-    int psCount = 6;            // vtm uses a 3 letter alphabet and h of a, b, c each has a pre- and suffixes
-
-    int maxMLen = ltrMLen * 3;     // morphism is an array that includes h(0), h(1), and h(2), see prefix suffix search.pdf
-    int morphism[maxMLen];
-    int i = 0; 
-    morphism[i] = 0;
-
-    int l = ceiling(ltrMLen, 2);                        // pre- or suffix h(a) or h(0) max length
-    int pa[l], pb[l], pc[l], sa[l], sb[l], sc[l];       // pa is prefix of h(a)
-    int ab[ltrMLen], ac[ltrMLen], ba[ltrMLen], bc[ltrMLen], ca[ltrMLen], cb[ltrMLen];       // suffix of a concatenated with prefix of b, etc.
-
-    unsigned int count = 0;
-    time_t start, now;
-    start = time(NULL);
-    FILE *fp;
-    fp = fopen("yxyprimexVTM.txt", "a");   // could add checks for error opening file
-    fprintf(fp, "ltrMLen: %d\n", ltrMLen);
-    fclose(fp);
-
-    while(i < maxMLen){
-        // printf("************************\n");
-        // printf("morphism: ");
-        // printIntArray(morphism, i + 1, 0);
-        int extend = 0;
-        int backtrack = 1;
-
-        int hLen = i + 1;                       // the morphism length so far
-        int paIdx = 0, pbIdx = 0, pcIdx = 0, saIdx = 0, sbIdx = 0, scIdx = 0;
-        int paLen = 0, pbLen = 0, pcLen = 0, saLen = 0, sbLen = 0, scLen = 0;       // need the precise length for use later
-
-        // pa and such is at least 1/6 of maxMLen which is the max value of hLen, so should not run out of space
-        for(int j = 0; j < hLen; j++){
-            if(j % psCount == 0){
-                pa[paIdx] = morphism[j];
-                paIdx++;
-                paLen++;
-            } else if(j % psCount == 1){
-                pb[pbIdx] = morphism[j];
-                pbIdx++;
-                pbLen++;
-            } else if(j % psCount == 2){
-                pc[pcIdx] = morphism[j];
-                pcIdx++;
-                pcLen++;
-            } else if(j % psCount == 3){
-                sa[saIdx] = morphism[j];
-                saIdx++;
-                saLen++;
-            } else if(j % psCount == 4){
-                sb[sbIdx] = morphism[j];
-                sbIdx++;
-                sbLen++;
-            } else if(j % psCount == 5){
-                sc[scIdx] = morphism[j];
-                scIdx++;
-                scLen++;
-            } else {
-                printf("ERROR: Did you change psCount without changing the loop that constructs the suffixes and predfixes?\n");
-            }
-        }
-        reverse(sa, saLen);
-        reverse(sb, sbLen);
-        reverse(sc, scLen);
-
-        // printf("before concat pa: ");
-        // printIntArray(pa, paLen, 0);
-        // printf("before concat pb: ");
-        // printIntArray(pb, pbLen, 0);
-        // printf("before concat pc: ");
-        // printIntArray(pc, pcLen, 0);
-        // printf("before concat sa: ");
-        // printIntArray(sa, saLen, 0);
-        // printf("before concat sb: ");
-        // printIntArray(sb, sbLen, 0);
-        // printf("before concat sc: ");
-        // printIntArray(sc, scLen, 0);
-
-        // vtm is squarefree
-        concat(sa, saLen, pb, pbLen, ab);
-        concat(sa, saLen, pc, pcLen, ac);
-        concat(sb, sbLen, pa, paLen, ba);
-        concat(sb, sbLen, pc, pcLen, bc);
-        concat(sc, scLen, pa, paLen, ca);
-        concat(sc, scLen, pb, pbLen, cb);
-
-        // printf("ab: ");
-        // printIntArray(ab, saLen + pbLen, 0);
-        // printf("ac: ");
-        // printIntArray(ac, saLen + pcLen, 0);
-        // printf("ba: ");
-        // printIntArray(ba, sbLen + paLen, 0);
-        // printf("bc: ");
-        // printIntArray(bc, sbLen + pcLen, 0);
-        // printf("ca: ");
-        // printIntArray(ca, scLen + paLen, 0);
-        // printf("cb: ");
-        // printIntArray(cb, scLen + pbLen, 0);
-
-        if(avoid_yxyprimex(ab, saLen + pbLen, yLen, xLen) &&
-        n_p_powerfree(ab, saLen + pbLen, n, p, plus) &&
-        avoid_yxyprimex(ac, saLen + pcLen, yLen, xLen) &&
-        n_p_powerfree(ac, saLen + pcLen, n, p, plus) &&
-        avoid_yxyprimex(ba, sbLen + paLen, yLen, xLen) &&
-        n_p_powerfree(ba, sbLen + paLen, n, p, plus) &&
-        avoid_yxyprimex(bc, sbLen + pcLen, yLen, xLen) &&
-        n_p_powerfree(bc, sbLen + pcLen, n, p, plus) &&
-        avoid_yxyprimex(ca, scLen + paLen, yLen, xLen) &&
-        n_p_powerfree(ca, scLen + paLen, n, p, plus) &&
-        avoid_yxyprimex(cb, scLen + pbLen, yLen, xLen) &&
-        n_p_powerfree(cb, scLen + pbLen, n, p, plus)){
-            backtrack = 0;
-            extend = 1;
-
-            // Walnut can only deal with uniform morphisms
-            if(hLen % 3 == 0){
-                int h0Len = paLen + saLen;
-                int h0[h0Len]; 
-                int h1[h0Len]; 
-                int h2[h0Len]; 
-                concat(pa, paLen, sa, saLen, h0);
-                concat(pb, pbLen, sb, sbLen, h1);
-                concat(pc, pcLen, sc, scLen, h2);
-
-                int postMorphLen = h0Len * preLen;
-                int postMorph[postMorphLen];
-                apply_tern_morph(pre, preLen, h0, h0Len, h1, h0Len, h2, h0Len, postMorph);
-
-                if(avoid_yxyprimex(postMorph, postMorphLen, yLen, xLen) &&
-                n_p_powerfree(postMorph, postMorphLen, n, p, plus)){
-
-                    fp = fopen("yxyprimexVTM.txt", "a");   // could add checks for error opening file
-                    fprintf(fp, "0->");
-                    filePrintIntArray(fp, h0, h0Len, 0);
-                    fprintf(fp, "1->");
-                    filePrintIntArray(fp, h1, h0Len, 0);
-                    fprintf(fp, "2->");
-                    filePrintIntArray(fp, h2, h0Len, 0);
-                    fclose(fp);
-                    return 1;
-
-                } else if(i == maxMLen - 1){
-                    extend = 0;
-                    backtrack = 1;
-                }
-            }
-        }        
-        if(extend){
-            // printf("EXTEND\n");
-            // check for i above 
-            // if we are here, i < maxMLen - 1
-            i++; 
-            morphism[i] = 0;
-        } 
-        if(backtrack){
-            // printf("BACKTRACK\n");
-            if(morphism[i] == 0) morphism[i] = 1;
-            else { 
-                while(morphism[i] == 1){
-                    i--; 
-                    if(i == 0) return 0;
-                }
-                morphism[i] = 1;
-            }
-        }
-        count++;
-        if(count % 1000000 == 0){
-            now = time(NULL);
-            fp = fopen("yxyprimexVTM.txt", "a");   // could add checks for error opening file
-            fprintf(fp, "checked %d potential sequences in %ld seconds\n", count, now - start);
-            fclose(fp);
-        }
-    }
-    printf("ERROR: i should never >= maxMLen, as i only advance in if(extend)\n");
-    return -1;
-}
-
-void vtm_build(int vtm[], int vtmLen){
-    vtm[0] = 2;
-    int source = 0;
-    int p = 0;
-    while(p < vtmLen){
-        if(vtm[source] == 0){
-            vtm[p] = 1;
-            p++;
-        } else if(vtm[source] == 1){
-            vtm[p] = 2;
-            p++; if(p == vtmLen) break;
-            vtm[p] = 0;
-            p++;
-        } else {
-            vtm[p] = 2;
-            p++; if(p == vtmLen) break;
-            vtm[p] = 1;
-            p++; if(p == vtmLen) break;
-            vtm[p] = 0;
-            p++;
-        }
-        source++;
-    }
-}
-
 int main(){
-    static int vtmLen = 20;
-    int vtm[vtmLen];
-    vtm_build(vtm, vtmLen);
-
-    int yLen = 2;
-    int xLen = 2;
-    int n = 5;
-    int p = 2;
-    int plus = 1;
-    int ltrMLen = 55;
-    int res = backtrack_search(vtm, vtmLen, yLen, xLen, n, p, plus, ltrMLen);
-
-    while(res == 0){
-        ltrMLen += 5;
-        res = backtrack_search(vtm, vtmLen, yLen, xLen, n, p, plus, ltrMLen);
-    }
-    // printf("backtrack search found result? %d\n", res);
 
 
 
@@ -373,11 +150,6 @@ int main(){
     // fp = fopen("yxyprimexVTM.txt", "a");   // could add checks for error opening file
     // fprintf(fp, "ltrMLen: %d\n", ltrMLen);
     // fclose(fp);
-
-    // int n1 = 411;
-    // int n2 = 42;
-    // int n3 = -4;
-    // printf("max of %d, %d, and %d is %d\n", n1, n2, n3, max(n1, n2, n3));
 
     // int s1[] = {};
     // int s1Len = 0;
