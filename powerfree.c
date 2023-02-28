@@ -139,12 +139,7 @@ void reverse(int str[], int sLen){
     }
 }
 
-int main(){
-
-
-
-
-
+// int main(){
 
     // FILE *fp;
     // fp = fopen("yxyprimexVTM.txt", "a");   // could add checks for error opening file
@@ -217,5 +212,5 @@ int main(){
     // // given 001110001 and 3/1 power, fixed..() should give 0
     // // printf("is the string %d/%d-powerfree? %d\n", n, p, fixed_n_p_powerfree(s, sLen, n, p));
     // printf("is the string %d/%d-powerfree? %d\n", n, p, n_p_powerfree(s, sLen, n, p, 1));
-}
+// }
 
