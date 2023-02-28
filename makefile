@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -O3
-TARGETS = TMsearch DEJsearch VTMsearch
+TARGETS = TMsearch DEJsearch VTMsearch LEsearch
 
 all: $(TARGETS)
 
@@ -13,6 +13,9 @@ DEJsearch: DEJsearch.o powerfree.o
 VTMsearch: VTMsearch.o powerfree.o
 	$(CC) $(CFLAGS) -o VTMsearch VTMsearch.o powerfree.o
 
+LEsearch: LEsearch.o powerfree.o
+	$(CC) $(CFLAGS) -o LEsearch LEsearch.o powerfree.o
+
 TMsearch.o: TMsearch.c powerfree.h
 	$(CC) $(CFLAGS) -c TMsearch.c
 
@@ -21,6 +24,9 @@ DEJsearch.o: DEJsearch.c powerfree.h
 
 VTMsearch.o: VTMsearch.c powerfree.h
 	$(CC) $(CFLAGS) -c VTMsearch.c
+
+LEsearch.o: LEsearch.c powerfree.h
+	$(CC) $(CFLAGS) -c LEsearch.c
 
 powerfree.o: powerfree.c powerfree.h
 	$(CC) $(CFLAGS) -c powerfree.c
