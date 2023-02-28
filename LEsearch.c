@@ -1,4 +1,4 @@
-// gcc -O3 -o DEJpowerfree DEJpowerfree.c
+// make LEsearch
 
 #include<stdio.h>
 #include<stdlib.h>
@@ -6,12 +6,12 @@
 #include "powerfree.h"
 
 // this is DFS
-// for pre morphism sequences from 3 letter alphabets like dej
+// for pre morphism sequences from 3 letter alphabets like Leech's word
 // xLen and yLen are the min length as in avoid_yxyprime()
 // ltrMLen is the max |h(0)| of the morphism we are looking for
 // return 0 not found, 1 found, -1 error
 int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, int plus, int ltrMLen){
-    int psCount = 6;            // dej uses a 3 letter alphabet and h of a, b, c each has a pre- and suffixes
+    int psCount = 6;            // Leech's word uses a 3 letter alphabet and h of a, b, c each has a pre- and suffixes
 
     int maxMLen = ltrMLen * 3;     // morphism is an array that includes h(0), h(1), and h(2), see prefix suffix search.pdf
     int morphism[maxMLen];
@@ -26,7 +26,7 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
     time_t start, now;
     start = time(NULL);
     FILE *fp;
-    fp = fopen("DEJyxyprimex.txt", "a");   // could add checks for error opening file
+    fp = fopen("LEyxyprimex.txt", "a");   // could add checks for error opening file
     fprintf(fp, "ltrMLen: %d\n", ltrMLen);
     fclose(fp);
 
@@ -88,7 +88,7 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
         // printf("before concat sc: ");
         // printIntArray(sc, scLen, 0);
 
-        // dej is 7/4+ power free
+        // Leech's word is 2 power free / squarefree
         concat(sa, saLen, pb, pbLen, ab);
         concat(sa, saLen, pc, pcLen, ac);
         concat(sb, sbLen, pa, paLen, ba);
@@ -141,7 +141,7 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
                 if(avoid_yxyprimex(postMorph, postMorphLen, yLen, xLen) &&
                 n_p_powerfree(postMorph, postMorphLen, n, p, plus)){
 
-                    fp = fopen("DEJyxyprimex.txt", "a");   // could add checks for error opening file
+                    fp = fopen("LEyxyprimex.txt", "a");   // could add checks for error opening file
                     fprintf(fp, "0->");
                     filePrintIntArray(fp, h0, h0Len, 0);
                     fprintf(fp, "1->");
@@ -178,7 +178,7 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
         count++;
         if(count % 10000 == 0){
             now = time(NULL);
-            fp = fopen("DEJyxyprimex.txt", "a");   // could add checks for error opening file
+            fp = fopen("LEyxyprimex.txt", "a");   // could add checks for error opening file
             fprintf(fp, "checked %d potential sequences in %ld seconds\n", count, now - start);
             fclose(fp);
         }
@@ -188,16 +188,16 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
 }
 
 int main(){
-    static int dejLen = 25;
-    int dej[dejLen];
-    int h0[] = {0, 1, 2, 0, 2, 1, 2, 0, 1, 2, 1, 0, 2, 1, 2, 0, 2, 1, 0};
-    int h1[] = {1, 2, 0, 1, 0, 2, 0, 1, 2, 0, 2, 1, 0, 2, 0, 1, 0, 2, 1};
-    int h2[] = {2, 0, 1, 2, 1, 0, 1, 2, 0, 1, 0, 2, 1, 0, 1, 2, 1, 0, 2};
-    int h0Len = 19;
-    int h1Len = 19;
-    int h2Len = 19;
-    ternary_seq_build(0, dej, dejLen, h0, h0Len, h1, h1Len, h2, h2Len);
-    // printIntArray(dej, dejLen, 0);
+    static int leLen = 20;
+    int le[leLen];
+    int h0[] = {0, 1, 2, 1, 0, 2, 1, 2, 0, 1, 2, 1, 0};
+    int h1[] = {1, 2, 0, 2, 1, 0, 2, 0, 1, 2, 0, 2, 1};
+    int h2[] = {2, 0, 1, 0, 2, 1, 0, 1, 2, 0, 1, 0, 2};
+    int h0Len = 13;
+    int h1Len = 13;
+    int h2Len = 13;
+    ternary_seq_build(0, le, leLen, h0, h0Len, h1, h1Len, h2, h2Len);
+    // printIntArray(le, leLen, 1);
 
     int yLen = 2;
     int xLen = 2;
@@ -205,11 +205,11 @@ int main(){
     int p = 2;
     int plus = 1;
     int ltrMLen = 30;
-    int res = backtrack_search(dej, dejLen, yLen, xLen, n, p, plus, ltrMLen);
+    int res = backtrack_search(le, leLen, yLen, xLen, n, p, plus, ltrMLen);
 
     while(res == 0){
         ltrMLen += 5;
-        res = backtrack_search(dej, dejLen, yLen, xLen, n, p, plus, ltrMLen);
+        res = backtrack_search(le, leLen, yLen, xLen, n, p, plus, ltrMLen);
     }
     // printf("backtrack search found result? %d\n", res);
 
