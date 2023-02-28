@@ -17,7 +17,7 @@ int n_p_powerfree(int str[], int sLen, int n, int p, int plus);
 int avoid_yxyprimex(int str[], int sLen, int yLen, int xLen);
 
 /* return h(pre), the length of res is decided by length of pre and h, make sure res is large enough */
-int apply_tern_morph(int pre[], int preLen, int h0[], int h0Len, int h1[], int h1Len, int h2[], int h2Len, int res[]){
+int apply_tern_morph(int pre[], int preLen, int h0[], int h0Len, int h1[], int h1Len, int h2[], int h2Len, int res[]);
 
 /* assume h0 and h1 are the same length */
 void apply_bin_morph(int pre[], int preLen, int h0[], int h1[], int h0Len, int res[preLen * h0Len]);
