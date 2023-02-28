@@ -1,6 +1,9 @@
 #ifndef POWERFREE_H
 #define POWERFREE_H
 
+/* round up a divided by b (a/b) */
+int ceiling(int a, int b)
+
 /* space = 0 if do not want space between array contents */
 void printIntArray(int arr[], int arrSize, int space);
 
