@@ -139,6 +139,33 @@ void reverse(int str[], int sLen){
     }
 }
 
+// build ternary seq that is the fixed point of the a morphism specified in the parameters
+void ternary_seq_build(int startNum, int res[], int resLen, int h0[], int h0Len, int h1[], int h1Len, int h2[], int h2Len){
+    res[0] = startNum;
+    int source = 0;
+    int p = 0;
+    while(p < resLen){
+        if(res[source] == 0){
+            for(int j = 0; j < h0Len && p < resLen; j++){
+                res[p] = h0[j];
+                p++;
+            }
+        } else if(res[source] == 1){
+            for(int j = 0; j < h1Len && p < resLen; j++){
+                res[p] = h1[j];
+                p++;
+            }
+        } else {
+            for(int j = 0; j < h2Len && p < resLen; j++){
+                res[p] = h2[j];
+                p++;
+            }
+        }
+        source++;
+    }
+}
+
+
 // int main(){
 
     // FILE *fp;

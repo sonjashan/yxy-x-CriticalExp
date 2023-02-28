@@ -3,131 +3,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<time.h>
-
-// round up a divided by b
-int ceiling(int a, int b){ return (a+b-1)/b; }
-
-void printIntArray(int arr[], int arrSize, int space){
-    for(int i = 0; i < arrSize; i++){
-        if(space) printf("%d  ", arr[i]);
-        else printf("%d", arr[i]);
-    }
-    printf("\n");
-}
-
-void filePrintIntArray(FILE *fp, int arr[], int arrSize, int space){
-    for(int i = 0; i < arrSize; i++){
-        if(space) fprintf(fp, "%d  ", arr[i]);
-        else fprintf(fp, "%d", arr[i]);
-    }
-    fprintf(fp,"\n");
-}
-
-int fixed_n_p_powerfree(int str[], int sLen, int n, int p){
-    // for each letter in str
-    for(int i = 0; i <= sLen - n; i++){
-        int halt = 0;
-        // for each letter in period
-        for(int j = 0; j < p; j++){
-            for(int step = p; j + step < n; step += p){
-                if(str[i + j] != str[i + j + step]){
-                    halt = 1;
-                    break;
-                }
-            }
-            if(halt) break;
-        }
-        if(!halt){
-        // printf("%d/%d power found at index %d: ", n, p, i);
-        // printIntArray(str, sLen, 0);
-            return 0;
-        }
-    }
-    return 1;
-}
-
-// finite length string, n is length of factor, p is length of period
-int n_p_powerfree(int str[], int sLen, int n, int p, int plus){
-    // x is each period length
-    // n/p = the exponent, ceil((x * n + c) / p), c is 1 if plus
-    for(int x = 1; ceiling(x * n + plus, p) <= sLen; x++){
-        if(!fixed_n_p_powerfree(str, sLen, ceiling(x * n + plus, p), x)) return 0;
-    }
-    return 1;
-}
-
-// no restriction on whether h0, h1, h2 lengths are the same
-// return h(pre), the length of res is decided by length of pre and h, make sure res is large enough
-int apply_tern_morph(int pre[], int preLen, int h0[], int h0Len, int h1[], int h1Len, int h2[], int h2Len, int res[]){
-    int resIdx = 0;
-    for(int i = 0; i < preLen; i++){
-        if(pre[i] == 0){
-            for(int j = 0; j < h0Len; j++){
-                res[resIdx] = h0[j];
-                resIdx++;
-            }
-        } else if(pre[i] == 1){
-            for(int j = 0; j < h1Len; j++){
-                res[resIdx] = h1[j];
-                resIdx++;
-            } 
-        } else {
-            for(int j = 0; j < h2Len; j++){
-                res[resIdx] = h2[j];
-                resIdx++;
-            }
-        }
-    }
-    return resIdx;
-}
-
-int fixed_len_avoid_yxyprimex(int str[], int sLen, int yLen, int xLen){
-    for(int i = 0; i <= sLen - (yLen + xLen) * 2; i++){
-        int halt = 0;
-        // test the y and y' in y x y' x
-        for(int yi = 0; yi < yLen; yi++){
-            if(str[i + yi] == str[i + yLen + xLen + yi]) {halt = 1; break;}
-        } 
-        // test the x and x in y x y' x
-        if(!halt){
-            for(int xi = 0; xi < xLen; xi++){
-                if(str[i + yLen + xi] != str[i + yLen + xLen + yLen + xi]) {halt = 1; break;}
-            }
-        }
-        if(!halt){
-        // printf("yxy\'x, ylen = %d, xlen = %d, found at index %d: ", yLen, xLen, i);
-        // printIntArray(str, sLen, 0);
-            return 0;
-        }
-    }
-    return 1;
-}
-
-// str is binary, xLen and yLen are the min length
-int avoid_yxyprimex(int str[], int sLen, int yLen, int xLen){
-    for(int i = yLen; (i + xLen) * 2 <= sLen; i++){
-        for(int j = xLen; (i + j) * 2 <= sLen; j++){
-            if(!fixed_len_avoid_yxyprimex(str, sLen, i, j)) return 0;
-        }
-    }
-    return 1;
-}
-
-// concatenate s2 to the end of s1, result is s1s2
-void concat(int s1[], int s1Len, int s2[], int s2Len, int s1s2[s1Len + s2Len]){
-    for(int i = 0; i < s1Len; i++) s1s2[i] = s1[i];
-    for(int i = 0; i < s2Len; i++) s1s2[i + s1Len] = s2[i];    
-}
-
-void reverse(int str[], int sLen){
-    int tmp[sLen];
-    for(int i = 0; i < sLen; i++){
-        tmp[sLen - 1 - i] = str[i];
-    }
-    for(int i = 0; i < sLen; i++){
-        str[i] = tmp[i];
-    }
-}
+#include "powerfree.h"
 
 // this is DFS
 // for pre morphism sequences from 3 letter alphabets like dej
@@ -311,31 +187,6 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
     return -1;
 }
 
-void ternary_seq_build(int startNum, int res[], int resLen, int h0[], int h0Len, int h1[], int h1Len, int h2[], int h2Len){
-    res[0] = startNum;
-    int source = 0;
-    int p = 0;
-    while(p < resLen){
-        if(res[source] == 0){
-            for(int j = 0; j < h0Len && p < resLen; j++){
-                res[p] = h0[j];
-                p++;
-            }
-        } else if(res[source] == 1){
-            for(int j = 0; j < h1Len && p < resLen; j++){
-                res[p] = h1[j];
-                p++;
-            }
-        } else {
-            for(int j = 0; j < h2Len && p < resLen; j++){
-                res[p] = h2[j];
-                p++;
-            }
-        }
-        source++;
-    }
-}
-
 int main(){
     static int dejLen = 25;
     int dej[dejLen];
@@ -363,16 +214,5 @@ int main(){
     // printf("backtrack search found result? %d\n", res);
 
 
-
-
-
-
-    // static int vtmLen = 25;
-    // int vtm[vtmLen];
-    // int h0[] = {1};
-    // int h1[] = {2, 0};
-    // int h2[] = {2, 1, 0};
-    // ternary_seq_build(2, vtm, vtmLen, h0, 1, h1, 2, h2, 3);
-    // printIntArray(vtm, vtmLen, 0);
 }
 
