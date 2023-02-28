@@ -1,15 +1,17 @@
 CC = gcc
 CFLAGS = -O3
-TARGET1 = TMsearch
-TARGET2 = DEJsearch
+TARGETS = TMsearch DEJsearch VTMsearch
 
-all: $(TARGET1) $(TARGET2)
+all: $(TARGETS)
 
-$(TARGET1): TMsearch.o powerfree.o
-	$(CC) $(CFLAGS) -o $(TARGET1) TMsearch.o powerfree.o
+TMsearch: TMsearch.o powerfree.o
+	$(CC) $(CFLAGS) -o TMsearch TMsearch.o powerfree.o
 
-$(TARGET2): DEJsearch.o powerfree.o
-	$(CC) $(CFLAGS) -o $(TARGET2) DEJsearch.o powerfree.o
+DEJsearch: DEJsearch.o powerfree.o
+	$(CC) $(CFLAGS) -o DEJsearch DEJsearch.o powerfree.o
+
+VTMsearch: VTMsearch.o powerfree.o
+	$(CC) $(CFLAGS) -o VTMsearch VTMsearch.o powerfree.o
 
 TMsearch.o: TMsearch.c powerfree.h
 	$(CC) $(CFLAGS) -c TMsearch.c
@@ -17,8 +19,11 @@ TMsearch.o: TMsearch.c powerfree.h
 DEJsearch.o: DEJsearch.c powerfree.h
 	$(CC) $(CFLAGS) -c DEJsearch.c
 
+VTMsearch.o: VTMsearch.c powerfree.h
+	$(CC) $(CFLAGS) -c VTMsearch.c
+
 powerfree.o: powerfree.c powerfree.h
 	$(CC) $(CFLAGS) -c powerfree.c
 
 clean:
-	rm -f *.o $(TARGET1) $(TARGET2)
+	rm -f *.o $(TARGETS)
