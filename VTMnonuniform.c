@@ -142,9 +142,23 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
                 
                 for (int h0Len = h0MaxLen; h0Len > 0; h0Len--){
                     int h2Len = h0MaxLen + 1 - h0Len;
+
+                    // h1Len * 2 = h0Len + h2Len, so if h0Len = h1Len, then h2Len = h1Len
+                    // if any two of h0, h1, h2 then we are introducing unnecessary powers
+                    if(h1Len == h0Len && (array_equal(h0, h1, h1Len) || array_equal(h1, h2, h1Len) || array_equal(h2, h0, h1Len))) continue;
+
                     int postMorphMaxLen = h0MaxLen * preLen;
                     int postMorph[postMorphMaxLen];
                     int postMorphLen = apply_tern_morph(pre, preLen, h0, h0Len, h1, h1Len, h2, h2Len, postMorph);
+
+                    // printf("h0: ");
+                    // printIntArray(h0, h0Len, 0);
+                    // printf("h1: ");
+                    // printIntArray(h1, h1Len, 0);
+                    // printf("h2: ");
+                    // printIntArray(h2, h2Len, 0);
+                    // printf("postMorph: ");
+                    // printIntArray(postMorph, postMorphLen, 0);
 
                     if(avoid_yxyprimex(postMorph, postMorphLen, yLen, xLen) &&
                     n_p_powerfree(postMorph, postMorphLen, n, p, plus)){
