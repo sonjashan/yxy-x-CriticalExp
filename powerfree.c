@@ -165,8 +165,21 @@ void ternary_seq_build(int startNum, int res[], int resLen, int h0[], int h0Len,
     }
 }
 
+// return 1 if two integer arrays s1 = s2, false otherwise, assume equal length
+int array_equal(int s1[], int s2[], int sLen){
+    for(int i = 0; i < sLen; i++){
+        if(s1[i] != s2[i]) return 0;
+    }
+    return 1;
+}
 
 // int main(){
+//     int s1[] = {2, 1, 3};
+//     int s2[] = {2, 1, 3};
+//     int sLen = 3;
+//     printf("are they equal? %d\n", array_equal(s1, s2, sLen));
+
+
 
     // FILE *fp;
     // fp = fopen("yxyprimexVTM.txt", "a");   // could add checks for error opening file

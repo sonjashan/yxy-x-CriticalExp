@@ -31,4 +31,7 @@ void reverse(int str[], int sLen);
 /* build ternary seq that is the fixed point of the a morphism specified in the parameters */
 void ternary_seq_build(int startNum, int res[], int resLen, int h0[], int h0Len, int h1[], int h1Len, int h2[], int h2Len);
 
+/* return 1 if two integer arrays s1 = s2, false otherwise, assume equal length */
+int array_equal(int s1[], int s2[], int sLen);
+
 #endif /* POWERFREE_H */
