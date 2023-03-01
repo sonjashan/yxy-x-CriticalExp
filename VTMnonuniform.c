@@ -33,9 +33,9 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
     fclose(fp);
 
     while(i < maxMLen){
-        printf("************************\n");
-        printf("morphism: ");
-        printIntArray(morphism, i + 1, 0);
+        // printf("************************\n");
+        // printf("morphism: ");
+        // printIntArray(morphism, i + 1, 0);
         int extend = 0;
         int backtrack = 1;
 
@@ -111,18 +111,18 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
         // printf("cb: ");
         // printIntArray(cb, scLen + pbLen, 0);
 
-        if(avoid_yxyprimex(ab, saLen + pbLen, yLen, xLen) &&
-        n_p_powerfree(ab, saLen + pbLen, n, p, plus) &&
-        avoid_yxyprimex(ac, saLen + pcLen, yLen, xLen) &&
+        if(n_p_powerfree(ab, saLen + pbLen, n, p, plus) &&
         n_p_powerfree(ac, saLen + pcLen, n, p, plus) &&
-        avoid_yxyprimex(ba, sbLen + paLen, yLen, xLen) &&
         n_p_powerfree(ba, sbLen + paLen, n, p, plus) &&
-        avoid_yxyprimex(bc, sbLen + pcLen, yLen, xLen) &&
         n_p_powerfree(bc, sbLen + pcLen, n, p, plus) &&
-        avoid_yxyprimex(ca, scLen + paLen, yLen, xLen) &&
         n_p_powerfree(ca, scLen + paLen, n, p, plus) &&
-        avoid_yxyprimex(cb, scLen + pbLen, yLen, xLen) &&
-        n_p_powerfree(cb, scLen + pbLen, n, p, plus)){
+        n_p_powerfree(cb, scLen + pbLen, n, p, plus) &&
+        avoid_yxyprimex(ab, saLen + pbLen, yLen, xLen) &&
+        avoid_yxyprimex(ac, saLen + pcLen, yLen, xLen) &&
+        avoid_yxyprimex(ba, sbLen + paLen, yLen, xLen) &&
+        avoid_yxyprimex(bc, sbLen + pcLen, yLen, xLen) &&
+        avoid_yxyprimex(ca, scLen + paLen, yLen, xLen) &&
+        avoid_yxyprimex(cb, scLen + pbLen, yLen, xLen)){
             backtrack = 0;
             extend = 1;
 
@@ -160,8 +160,8 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
                     // printf("postMorph: ");
                     // printIntArray(postMorph, postMorphLen, 0);
 
-                    if(avoid_yxyprimex(postMorph, postMorphLen, yLen, xLen) &&
-                    n_p_powerfree(postMorph, postMorphLen, n, p, plus)){
+                    if(n_p_powerfree(postMorph, postMorphLen, n, p, plus) && 
+                    avoid_yxyprimex(postMorph, postMorphLen, yLen, xLen)){
 
                         fp = fopen("nonuniVTMyxyprimex.txt", "a");   // could add checks for error opening file
                         fprintf(fp, "0->");
