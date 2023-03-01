@@ -1,4 +1,4 @@
-// gcc -O3 -o powerfree powerfree.c
+// can only be nonuniform if |h(02)| = 2 * |h(1)|
 
 #include<stdio.h>
 #include<stdlib.h>
@@ -27,7 +27,7 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
     time_t start, now;
     start = time(NULL);
     FILE *fp;
-    fp = fopen("yxyprimexVTM.txt", "a");   // could add checks for error opening file
+    fp = fopen("nonuniVTMyxyprimex.txt", "a");   // could add checks for error opening file
     fprintf(fp, "ltrMLen: %d\n", ltrMLen);
     fclose(fp);
 
@@ -38,12 +38,12 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
         int extend = 0;
         int backtrack = 1;
 
-        int hLen = i + 1;                       // the morphism length so far
+        int HLen = i + 1;                       // the morphism length so far
         int paIdx = 0, pbIdx = 0, pcIdx = 0, saIdx = 0, sbIdx = 0, scIdx = 0;
         int paLen = 0, pbLen = 0, pcLen = 0, saLen = 0, sbLen = 0, scLen = 0;       // need the precise length for use later
 
-        // pa and such is at least 1/6 of maxMLen which is the max value of hLen, so should not run out of space
-        for(int j = 0; j < hLen; j++){
+        // pa and such is at least 1/6 of maxMLen which is the max value of HLen, so should not run out of space
+        for(int j = 0; j < HLen; j++){
             if(j % psCount == 0){
                 pa[paIdx] = morphism[j];
                 paIdx++;
@@ -126,33 +126,39 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
             extend = 1;
 
             // Walnut can only deal with uniform morphisms
-            if(hLen % 3 == 0){
-                int h0Len = paLen + saLen;
-                int h0[h0Len]; 
-                int h1[h0Len]; 
-                int h2[h0Len]; 
+            if(HLen % 3 == 0 && (HLen / 3) % 2 == 1){
+                int hMaxLen = paLen + saLen;
+                int h0[hMaxLen]; 
+                int h1[hMaxLen]; 
+                int h2[hMaxLen]; 
                 concat(pa, paLen, sa, saLen, h0);
                 concat(pb, pbLen, sb, sbLen, h1);
                 concat(pc, pcLen, sc, scLen, h2);
+                
+                int h1Len = (hMaxLen + 1) / 2;
+                if (h1Len != ((HLen / 3) + 1) / 2) printf("line 138, hMaxLen HLen issues\n");
+                for (int h0Len = hMaxLen; h0Len > 0; h0Len--){
+                    int h2Len = hMaxLen + 1 - h0Len;
+                    int postMorphMaxLen = hMaxLen * preLen;
+                    int postMorph[postMorphMaxLen];
+                    int postMorphLen = apply_tern_morph(pre, preLen, h0, h0Len, h1, h1Len, h2, h2Len, postMorph);
 
-                int postMorphLen = h0Len * preLen;
-                int postMorph[postMorphLen];
-                apply_tern_morph(pre, preLen, h0, h0Len, h1, h0Len, h2, h0Len, postMorph);
+                    if(avoid_yxyprimex(postMorph, postMorphLen, yLen, xLen) &&
+                    n_p_powerfree(postMorph, postMorphLen, n, p, plus)){
 
-                if(avoid_yxyprimex(postMorph, postMorphLen, yLen, xLen) &&
-                n_p_powerfree(postMorph, postMorphLen, n, p, plus)){
+                        fp = fopen("nonuniVTMyxyprimex.txt", "a");   // could add checks for error opening file
+                        fprintf(fp, "0->");
+                        filePrintIntArray(fp, h0, h0Len, 0);
+                        fprintf(fp, "1->");
+                        filePrintIntArray(fp, h1, h1Len, 0);
+                        fprintf(fp, "2->");
+                        filePrintIntArray(fp, h2, h2Len, 0);
+                        fclose(fp);
 
-                    fp = fopen("yxyprimexVTM.txt", "a");   // could add checks for error opening file
-                    fprintf(fp, "0->");
-                    filePrintIntArray(fp, h0, h0Len, 0);
-                    fprintf(fp, "1->");
-                    filePrintIntArray(fp, h1, h0Len, 0);
-                    fprintf(fp, "2->");
-                    filePrintIntArray(fp, h2, h0Len, 0);
-                    fclose(fp);
-                    return 1;
-
-                } else if(i == maxMLen - 1){
+                        return 1;
+                    }
+                } 
+                if(i == maxMLen - 1){
                     extend = 0;
                     backtrack = 1;
                 }
@@ -177,9 +183,9 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
             }
         }
         count++;
-        if(count % 1000000 == 0){
+        if(count % 10000 == 0){
             now = time(NULL);
-            fp = fopen("yxyprimexVTM.txt", "a");   // could add checks for error opening file
+            fp = fopen("nonuniVTMyxyprimex.txt", "a");   // could add checks for error opening file
             fprintf(fp, "checked %d potential sequences in %ld seconds\n", count, now - start);
             fclose(fp);
         }
