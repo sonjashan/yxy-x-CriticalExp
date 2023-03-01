@@ -9,67 +9,68 @@
 // this is DFS
 // for pre morphism sequences from 3 letter alphabets like vtm
 // xLen and yLen are the min length as in avoid_yxyprime()
-// ltrMLen is the max |h(0)| of the morphism we are looking for
+// h1MaxLen is the max |h(1)| of the morphism we are looking for
 // return 0 not found, 1 found, -1 error
-int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, int plus, int ltrMLen){
-    int psCount = 6;            // vtm uses a 3 letter alphabet and h of a, b, c each has a pre- and suffixes
+int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, int plus, int h1MaxLen){
+    // search string: a1 c1 b1 a'1 c'1 a2 c2 b1' a'2 c'2 a3 c3 b2...
+    // h(0) = a1...at a't...a'1
 
-    int maxMLen = ltrMLen * 3;     // morphism is an array that includes h(0), h(1), and h(2), see prefix suffix search.pdf
+    int maxMLen = h1MaxLen * 5 - 2;     // we always stop at after a b# in the search string, 2*(2*h1MaxLen - 1) + h1MaxLen
     int morphism[maxMLen];
     int i = 0; 
     morphism[i] = 0;
 
-    int l = ceiling(ltrMLen, 2);                        // pre- or suffix h(a) or h(0) max length
-    int pa[l], pb[l], pc[l], sa[l], sb[l], sc[l];       // pa is prefix of h(a)
-    int ab[ltrMLen], ac[ltrMLen], ba[ltrMLen], bc[ltrMLen], ca[ltrMLen], cb[ltrMLen];       // suffix of a concatenated with prefix of b, etc.
+    // pre- or suffixes max length is h1MaxLen (out of h1MaxLen-1, ceil(h1MaxLen/2), and h1MaxLen/2)
+    int pa[h1MaxLen], pb[h1MaxLen], pc[h1MaxLen], sa[h1MaxLen], sb[h1MaxLen], sc[h1MaxLen];       // pa is prefix of h(a)
+    int ab[2*h1MaxLen], ac[2*h1MaxLen], ba[2*h1MaxLen], bc[2*h1MaxLen], ca[2*h1MaxLen], cb[2*h1MaxLen];       // suffix of a concatenated with prefix of b, etc.
 
     unsigned int count = 0;
     time_t start, now;
     start = time(NULL);
     FILE *fp;
     fp = fopen("nonuniVTMyxyprimex.txt", "a");   // could add checks for error opening file
-    fprintf(fp, "ltrMLen: %d\n", ltrMLen);
+    fprintf(fp, "h1MaxLen: %d\n", h1MaxLen);
     fclose(fp);
 
     while(i < maxMLen){
-        // printf("************************\n");
-        // printf("morphism: ");
-        // printIntArray(morphism, i + 1, 0);
+        printf("************************\n");
+        printf("morphism: ");
+        printIntArray(morphism, i + 1, 0);
         int extend = 0;
         int backtrack = 1;
 
-        int HLen = i + 1;                       // the morphism length so far
+        int HLen = i + 1;       // the morphism length so far
         int paIdx = 0, pbIdx = 0, pcIdx = 0, saIdx = 0, sbIdx = 0, scIdx = 0;
         int paLen = 0, pbLen = 0, pcLen = 0, saLen = 0, sbLen = 0, scLen = 0;       // need the precise length for use later
 
-        // pa and such is at least 1/6 of maxMLen which is the max value of HLen, so should not run out of space
+        // pa and such is of length h1MaxLen, HLen is at most h1MaxLen * 5 - 2, so should not run out of space
         for(int j = 0; j < HLen; j++){
-            if(j % psCount == 0){
+            if(j % 5 == 0){
                 pa[paIdx] = morphism[j];
                 paIdx++;
                 paLen++;
-            } else if(j % psCount == 1){
+            } else if(j % 10 == 2){
                 pb[pbIdx] = morphism[j];
                 pbIdx++;
                 pbLen++;
-            } else if(j % psCount == 2){
+            } else if(j % 5 == 1){
                 pc[pcIdx] = morphism[j];
                 pcIdx++;
                 pcLen++;
-            } else if(j % psCount == 3){
+            } else if(j % 5 == 3){
                 sa[saIdx] = morphism[j];
                 saIdx++;
                 saLen++;
-            } else if(j % psCount == 4){
+            } else if(j % 10 == 7){
                 sb[sbIdx] = morphism[j];
                 sbIdx++;
                 sbLen++;
-            } else if(j % psCount == 5){
+            } else if(j % 5 == 4){
                 sc[scIdx] = morphism[j];
                 scIdx++;
                 scLen++;
             } else {
-                printf("ERROR: Did you change psCount without changing the loop that constructs the suffixes and predfixes?\n");
+                printf("ERROR: Did you change the numbers without changing the loop that constructs the suffixes and predfixes?\n");
             }
         }
         reverse(sa, saLen);
@@ -125,21 +126,23 @@ int backtrack_search(int pre[], int preLen, int yLen, int xLen, int n, int p, in
             backtrack = 0;
             extend = 1;
 
-            // Walnut can only deal with uniform morphisms
-            if(HLen % 3 == 0 && (HLen / 3) % 2 == 1){
-                int hMaxLen = paLen + saLen;
-                int h0[hMaxLen]; 
-                int h1[hMaxLen]; 
-                int h2[hMaxLen]; 
+            // non uniform morphisms if |h(02|) = 2 * |h(1)|
+            if(HLen % 5 == 3){
+                int h1Len = pbLen + sbLen;
+                int h0MaxLen = h1Len * 2 - 1;
+                // because of the format of the search string
+                if (h0MaxLen != paLen + saLen || h0MaxLen != pcLen + scLen) printf("line 138, pre- and suffix length issues\n");
+                
+                int h0[h0MaxLen];
+                int h1[h1Len]; 
+                int h2[h0MaxLen]; 
                 concat(pa, paLen, sa, saLen, h0);
                 concat(pb, pbLen, sb, sbLen, h1);
                 concat(pc, pcLen, sc, scLen, h2);
                 
-                int h1Len = (hMaxLen + 1) / 2;
-                if (h1Len != ((HLen / 3) + 1) / 2) printf("line 138, hMaxLen HLen issues\n");
-                for (int h0Len = hMaxLen; h0Len > 0; h0Len--){
-                    int h2Len = hMaxLen + 1 - h0Len;
-                    int postMorphMaxLen = hMaxLen * preLen;
+                for (int h0Len = h0MaxLen; h0Len > 0; h0Len--){
+                    int h2Len = h0MaxLen + 1 - h0Len;
+                    int postMorphMaxLen = h0MaxLen * preLen;
                     int postMorph[postMorphMaxLen];
                     int postMorphLen = apply_tern_morph(pre, preLen, h0, h0Len, h1, h1Len, h2, h2Len, postMorph);
 
@@ -208,12 +211,12 @@ int main(){
     int n = 5;
     int p = 2;
     int plus = 1;
-    int ltrMLen = 55;
-    int res = backtrack_search(vtm, vtmLen, yLen, xLen, n, p, plus, ltrMLen);
+    int h1MaxLen = 30;
+    int res = backtrack_search(vtm, vtmLen, yLen, xLen, n, p, plus, h1MaxLen);
 
     while(res == 0){
-        ltrMLen += 5;
-        res = backtrack_search(vtm, vtmLen, yLen, xLen, n, p, plus, ltrMLen);
+        h1MaxLen += 5;
+        res = backtrack_search(vtm, vtmLen, yLen, xLen, n, p, plus, h1MaxLen);
     }
     // printf("backtrack search found result? %d\n", res);
 
