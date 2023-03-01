@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -O3
-TARGETS = TMsearch DEJsearch VTMsearch LEsearch VTMnonuniform DEJnonuniform
+TARGETS = TMsearch DEJsearch VTMsearch LEsearch VTMnonuniform DEJnonuniform test
 
 all: $(TARGETS)
 
@@ -22,6 +22,9 @@ VTMnonuniform: VTMnonuniform.o powerfree.o
 DEJnonuniform: DEJnonuniform.o powerfree.o
 	$(CC) $(CFLAGS) -o DEJnonuniform DEJnonuniform.o powerfree.o
 
+test: test.o powerfree.o
+	$(CC) $(CFLAGS) -o test test.o powerfree.o
+
 TMsearch.o: TMsearch.c powerfree.h
 	$(CC) $(CFLAGS) -c TMsearch.c
 
@@ -39,6 +42,9 @@ VTMnonuniform.o: VTMnonuniform.c powerfree.h
 
 DEJnonuniform.o: DEJnonuniform.c powerfree.h
 	$(CC) $(CFLAGS) -c DEJnonuniform.c
+
+test.o: test.c powerfree.h
+	$(CC) $(CFLAGS) -c test.c
 
 powerfree.o: powerfree.c powerfree.h
 	$(CC) $(CFLAGS) -c powerfree.c
